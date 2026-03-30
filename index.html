@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#080c18">
+<title>Clinic Daily Stats</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+<style>
+:root{
+  --bg:#080c18;--s1:#0d1321;--s2:#111a2e;--s3:#172035;
+  --bd:#1c2a42;--bd2:#243350;
+  --sky:#38bdf8;--sky2:#0284c7;--teal:#2dd4bf;
+  --gold:#fbbf24;--lime:#86efac;--rose:#fb7185;--violet:#a78bfa;
+  --text:#e2eaf6;--dim:#94a3b8;--muted:#475569;
+  --r:13px;--sh:0 4px 32px rgba(0,0,0,.5);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden}
+input,select,textarea,button{font-family:'Plus Jakarta Sans',sans-serif}
+button{cursor:pointer}
+.screen{display:none;min-height:100vh}
+.screen.active{display:block}
+
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(6px);z-index:300;align-items:center;justify-content:center;padding:16px}
+.modal-overlay.open{display:flex}
+.modal-box{background:var(--s1);border:1px solid var(--bd2);border-radius:20px;padding:28px 22px;width:100%;max-width:440px;max-height:92vh;overflow-y:auto}
+.modal-box h2{font-size:1.05rem;font-weight:800;color:#fff;margin-bottom:4px}
+.modal-sub{font-size:.76rem;color:var(--dim);margin-bottom:20px;line-height:1.6}
+.cfg-field{margin-bottom:12px}
+.cfg-field label{display:block;font-size:.68rem;font-weight:700;color:var(--dim);letter-spacing:.8px;text-transform:uppercase;margin-bottom:5px}
+.cfg-field input{width:100%;padding:10px 13px;background:var(--s2);border:1.5px solid var(--bd);border-radius:9px;color:var(--text);font-size:.82rem;font-family:'DM Mono',monospace;outline:none;transition:border-color .2s}
+.cfg-field input:focus{border-color:var(--sky)}
+.modal-btns{display:flex;gap:10px;margin-top:18px}
+.btn-cancel{flex:1;padding:11px;background:var(--s2);border:1px solid var(--bd);border-radius:9px;color:var(--dim);font-size:.85rem;font-weight:600}
+.btn-save{flex:2;padding:11px;background:linear-gradient(135deg,var(--sky2),var(--sky));border:none;border-radius:9px;color:#fff;font-size:.85rem;font-weight:700}
+.how-to{margin-top:16px;background:rgba(56,189,248,.06);border:1px solid rgba(56,189,248,.15);border-radius:10px;padding:14px}
+.how-to .ht{font-size:.68rem;font-weight:800;color:var(--sky);letter-spacing:.5px;margin-bottom:8px}
+.how-to ol{padding-left:16px}
+.how-to li{font-size:.7rem;color:var(--dim);margin-bottom:5px;line-height:1.55}
+.how-to strong{color:var(--text)}
+.how-to code{background:rgba(255,255,255,.07);border-radius:3px;padding:1px 5px;font-family:'DM Mono',monospace;color:var(--sky);font-size:.75rem}
+
+/* LOGIN */
+#loginScreen{display:none;align-items:center;justify-content:center;min-height:100vh;padding:20px;background:radial-gradient(ellipse 60% 50% at 15% 60%,rgba(2,132,199,.14) 0%,transparent 70%),radial-gradient(ellipse 50% 40% at 85% 20%,rgba(56,189,248,.08) 0%,transparent 60%),var(--bg)}
+#loginScreen.active{display:flex}
+.login-wrap{width:100%;max-width:360px}
+.login-brand{text-align:center;margin-bottom:36px}
+.login-icon{width:68px;height:68px;margin:0 auto 16px;background:linear-gradient(135deg,var(--sky2),var(--sky));border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:30px;box-shadow:0 12px 32px rgba(56,189,248,.3)}
+.login-brand h1{font-size:1.5rem;font-weight:800;color:#fff;letter-spacing:-.3px}
+.login-brand p{font-size:.78rem;color:var(--muted);margin-top:4px}
+.login-card{background:var(--s1);border:1px solid var(--bd);border-radius:20px;padding:28px 24px;box-shadow:var(--sh)}
+.lf-group{margin-bottom:16px}
+.lf-group label{display:block;font-size:.7rem;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px}
+.lf-group input{width:100%;padding:12px 15px;background:var(--s2);border:1.5px solid var(--bd);border-radius:10px;color:var(--text);font-size:.9rem;outline:none;transition:border-color .2s,box-shadow .2s}
+.lf-group input:focus{border-color:var(--sky);box-shadow:0 0 0 3px rgba(56,189,248,.1)}
+.login-err{background:rgba(251,113,133,.1);border:1px solid rgba(251,113,133,.25);border-radius:8px;padding:10px 14px;font-size:.78rem;color:#fda4af;margin-bottom:14px;display:none}
+.btn-login{width:100%;padding:13px;background:linear-gradient(135deg,var(--sky2),var(--sky));border:none;border-radius:10px;color:#fff;font-size:.95rem;font-weight:800;letter-spacing:.2px;transition:opacity .2s,transform .1s;box-shadow:0 6px 20px rgba(56,189,248,.3)}
+.btn-login:active{transform:scale(.98)}
+.login-footer{text-align:center;margin-top:14px}
+.login-footer span{font-size:.72rem;color:var(--muted)}
+.login-footer a{font-size:.72rem;color:var(--sky);text-decoration:none;font-weight:600}
+
+/* APP SHELL */
+#appScreen{display:none;flex-direction:column;min-height:100vh}
+#appScreen.active{display:flex}
+.topbar{background:var(--s1);border-bottom:1px solid var(--bd);padding:12px 18px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 16px rgba(0,0,0,.35)}
+.tb-left{display:flex;align-items:center;gap:10px}
+.tb-icon{width:34px;height:34px;border-radius:9px;flex-shrink:0;background:linear-gradient(135deg,var(--sky2),var(--sky));display:flex;align-items:center;justify-content:center;font-size:15px}
+.tb-title{font-size:.9rem;font-weight:800;color:#fff;letter-spacing:-.2px}
+.tb-date{font-size:.65rem;color:var(--muted);margin-top:1px}
+.tb-right{display:flex;align-items:center;gap:8px}
+.user-pill{display:flex;align-items:center;gap:6px;background:var(--s2);border:1px solid var(--bd);border-radius:20px;padding:5px 10px 5px 8px}
+.user-avatar{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;flex-shrink:0}
+.user-avatar.admin{background:linear-gradient(135deg,var(--sky2),var(--sky))}
+.user-avatar.staff{background:linear-gradient(135deg,#059669,var(--teal))}
+.user-name{font-size:.72rem;font-weight:600;color:var(--dim)}
+.role-tag{font-size:.6rem;font-weight:800;letter-spacing:.5px;padding:2px 6px;border-radius:10px}
+.role-tag.admin{background:rgba(56,189,248,.15);color:var(--sky)}
+.role-tag.staff{background:rgba(45,212,191,.12);color:var(--teal)}
+.btn-out{background:var(--s2);border:1px solid var(--bd);border-radius:8px;padding:6px 9px;font-size:.75rem;color:var(--muted);transition:all .2s}
+.btn-out:hover{border-color:var(--rose);color:var(--rose)}
+
+.pages{flex:1;overflow-y:auto;padding-bottom:80px}
+.page{display:none;padding:18px 16px;max-width:680px;margin:0 auto;width:100%}
+.page.active{display:block;animation:fadeUp .25s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--s1);border-top:1px solid var(--bd);display:flex;padding-bottom:env(safe-area-inset-bottom);box-shadow:0 -4px 24px rgba(0,0,0,.4);z-index:100}
+.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;padding:9px 4px 7px;background:none;border:none;color:var(--muted);font-size:.58rem;font-weight:700;letter-spacing:.4px;text-transform:uppercase;gap:4px;transition:color .2s}
+.nav-btn .ni{font-size:19px;line-height:1;transition:transform .2s}
+.nav-btn.active{color:var(--sky)}
+.nav-btn.active .ni{transform:scale(1.15)}
+.nav-btn.locked{opacity:.35;cursor:not-allowed}
+
+/* SHARED */
+.section-hd{display:flex;align-items:center;gap:8px;margin-bottom:14px}
+.sdot{width:5px;height:5px;border-radius:50%;background:var(--sky);box-shadow:0 0 7px var(--sky);flex-shrink:0}
+.section-hd h2{font-size:.72rem;font-weight:800;color:var(--dim);text-transform:uppercase;letter-spacing:1px}
+.section-hd .ct{margin-left:auto;font-size:.65rem;color:var(--muted)}
+.card{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r);padding:18px;margin-bottom:14px}
+.card-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.card-title{font-size:.82rem;font-weight:700;color:var(--text)}
+.badge{font-size:.62rem;font-weight:700;padding:3px 9px;border-radius:20px;background:rgba(56,189,248,.1);color:var(--sky);border:1px solid rgba(56,189,248,.18)}
+.badge.g{background:rgba(134,239,172,.1);color:var(--lime);border-color:rgba(134,239,172,.2)}
+.badge.a{background:rgba(251,191,36,.1);color:var(--gold);border-color:rgba(251,191,36,.2)}
+
+.kpis{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.kpi{background:var(--s2);border:1px solid var(--bd);border-radius:12px;padding:13px;position:relative;overflow:hidden}
+.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.kpi.sky::before{background:linear-gradient(90deg,var(--sky),transparent)}
+.kpi.teal::before{background:linear-gradient(90deg,var(--teal),transparent)}
+.kpi.gold::before{background:linear-gradient(90deg,var(--gold),transparent)}
+.kpi.violet::before{background:linear-gradient(90deg,var(--violet),transparent)}
+.kpi-lbl{font-size:.62rem;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:5px}
+.kpi-val{font-size:1.15rem;font-weight:800;color:#fff;font-family:'DM Mono',monospace;line-height:1.2}
+.kpi-sub{font-size:.62rem;color:var(--muted);margin-top:3px}
+
+.spin{display:inline-block;width:16px;height:16px;border:2px solid rgba(255,255,255,.2);border-top-color:#fff;border-radius:50%;animation:sp .6s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.loading{display:flex;align-items:center;justify-content:center;gap:10px;padding:36px;color:var(--muted);font-size:.8rem}
+
+/* ENTRY FORM */
+.lock-banner{display:none;background:linear-gradient(135deg,rgba(251,191,36,.08),rgba(251,113,133,.05));border:1px solid rgba(251,191,36,.28);border-radius:12px;padding:16px;margin-bottom:16px;align-items:center;gap:12px}
+.lock-banner.show{display:flex}
+.lb-icon{font-size:26px}
+.lb-text h3{font-size:.85rem;font-weight:700;color:var(--gold)}
+.lb-text p{font-size:.72rem;color:var(--muted);margin-top:3px;line-height:1.5}
+
+.fsec{margin-bottom:22px}
+.fsec-title{font-size:.68rem;font-weight:800;color:var(--sky);text-transform:uppercase;letter-spacing:1.5px;padding-bottom:8px;border-bottom:1px solid var(--bd);margin-bottom:14px;display:flex;align-items:center;gap:7px}
+.fg{margin-bottom:12px}
+.fg label{display:block;font-size:.67rem;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px}
+.fg input,.fg select,.fg textarea{width:100%;padding:11px 13px;background:var(--s2);border:1.5px solid var(--bd);border-radius:9px;color:var(--text);font-size:.87rem;outline:none;transition:border-color .2s,box-shadow .2s}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--sky);box-shadow:0 0 0 3px rgba(56,189,248,.09)}
+.fg input[type=number]{font-family:'DM Mono',monospace}
+.fg input:disabled,.fg select:disabled,.fg textarea:disabled{opacity:.38;cursor:not-allowed;background:var(--s1)}
+.fg textarea{resize:vertical;min-height:68px;line-height:1.5}
+input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none}
+input[type=number]{-moz-appearance:textfield}
+.frow{display:grid;gap:10px}
+.frow.c2{grid-template-columns:1fr 1fr}
+.frow.c3{grid-template-columns:1fr 1fr 1fr}
+.pay-check{font-size:.72rem;padding:8px 12px;border-radius:8px;background:var(--s2);border:1px solid var(--bd);color:var(--muted);transition:all .2s}
+.pay-check.ok{border-color:rgba(134,239,172,.3);color:var(--lime);background:rgba(134,239,172,.05)}
+.pay-check.warn{border-color:rgba(251,191,36,.3);color:var(--gold);background:rgba(251,191,36,.04)}
+.btn-submit{width:100%;padding:14px;background:linear-gradient(135deg,var(--sky2),var(--sky));border:none;border-radius:11px;color:#fff;font-size:.95rem;font-weight:800;letter-spacing:.2px;transition:opacity .2s,transform .1s;box-shadow:0 6px 22px rgba(56,189,248,.25)}
+.btn-submit:active{transform:scale(.98)}
+.btn-submit:disabled{opacity:.45;cursor:not-allowed}
+.sub-ok{display:none;margin-top:12px;padding:13px;background:rgba(134,239,172,.08);border:1px solid rgba(134,239,172,.25);border-radius:10px;text-align:center;color:#86efac;font-size:.82rem;font-weight:600}
+
+/* RECORDS */
+.filter-bar{display:flex;gap:8px;margin-bottom:14px}
+.filter-bar select,.filter-bar input{padding:9px 11px;background:var(--s2);border:1.5px solid var(--bd);border-radius:9px;color:var(--text);font-size:.8rem;outline:none;flex:1;min-width:0}
+.filter-bar select:focus,.filter-bar input:focus{border-color:var(--sky)}
+.filter-bar select option{background:var(--s2)}
+
+.rec-list{display:flex;flex-direction:column;gap:9px}
+.rec-card{background:var(--s2);border:1px solid var(--bd);border-radius:12px;padding:14px 15px;cursor:pointer;transition:border-color .2s,transform .15s}
+.rec-card:hover{border-color:var(--sky);transform:translateY(-1px)}
+.rec-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px}
+.rec-date{font-size:.85rem;font-weight:700;color:#fff}
+.rec-col{font-family:'DM Mono',monospace;font-size:.9rem;font-weight:700;color:var(--lime)}
+.rec-chips{display:flex;gap:7px;flex-wrap:wrap}
+.chip{background:rgba(255,255,255,.04);border-radius:6px;padding:3px 8px;font-size:.67rem;color:var(--dim);display:flex;align-items:center;gap:3px}
+.chip b{color:var(--text);font-weight:600}
+.rec-note{margin-top:8px;font-size:.7rem;color:var(--muted);font-style:italic;line-height:1.4}
+.rec-detail{display:none;margin-top:11px;padding-top:11px;border-top:1px solid var(--bd)}
+.rec-detail.open{display:block}
+.det-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px}
+.ditem{background:rgba(255,255,255,.025);border-radius:8px;padding:8px 10px}
+.ditem .dl{font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+.ditem .dv{font-size:.8rem;font-weight:600;color:var(--text);margin-top:2px;font-family:'DM Mono',monospace}
+.ditem.wide{grid-column:1/-1}
+.ditem.wide .dv{font-family:'Plus Jakarta Sans',sans-serif;font-size:.75rem}
+.btn-del{margin-top:10px;padding:7px 14px;background:rgba(251,113,133,.1);border:1px solid rgba(251,113,133,.25);color:#fda4af;border-radius:7px;font-size:.7rem;font-weight:600;transition:all .2s}
+.btn-del:hover{background:rgba(251,113,133,.2)}
+
+.sum-table{width:100%;border-collapse:collapse;font-size:.76rem}
+.sum-table th{padding:9px 10px;text-align:left;background:var(--s2);color:var(--muted);font-size:.63rem;text-transform:uppercase;letter-spacing:.6px;border-bottom:1px solid var(--bd);font-weight:700}
+.sum-table td{padding:9px 10px;border-bottom:1px solid rgba(28,42,66,.6);color:var(--dim)}
+.sum-table tr:last-child td{border-bottom:none}
+.sum-table .mo{color:#fff;font-weight:700}
+.sum-table .rv{color:var(--lime);font-family:'DM Mono',monospace;font-weight:600}
+.sum-table .pt{color:var(--violet);font-weight:600}
+
+/* ADMIN */
+.user-list{display:flex;flex-direction:column;gap:8px}
+.user-row{background:var(--s2);border:1px solid var(--bd);border-radius:10px;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.uinfo .uname{font-size:.84rem;font-weight:700;color:#fff}
+.uinfo .uemail{font-size:.7rem;color:var(--muted);margin-top:2px}
+.role-btn{padding:5px 13px;border-radius:20px;border:1px solid var(--bd);font-size:.68rem;font-weight:800;background:none;transition:all .2s;letter-spacing:.3px;flex-shrink:0}
+.role-btn.admin{background:rgba(56,189,248,.15);color:var(--sky);border-color:rgba(56,189,248,.3)}
+.role-btn.staff{background:rgba(45,212,191,.1);color:var(--teal);border-color:rgba(45,212,191,.25)}
+
+/* TOAST */
+.toast{position:fixed;bottom:88px;left:50%;transform:translateX(-50%) translateY(10px);background:var(--s1);border:1px solid var(--bd2);border-radius:10px;padding:11px 18px;font-size:.8rem;color:var(--text);box-shadow:var(--sh);z-index:999;opacity:0;transition:all .28s;pointer-events:none;white-space:nowrap;max-width:90vw;text-align:center}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.ok{border-color:rgba(134,239,172,.3);color:var(--lime)}
+.toast.err{border-color:rgba(251,113,133,.3);color:#fda4af}
+
+.empty{text-align:center;padding:44px 16px;color:var(--muted)}
+.empty .ei{font-size:46px;margin-bottom:10px;opacity:.35}
+.empty p{font-size:.8rem}
+
+@media(max-width:380px){
+  .frow.c3{grid-template-columns:1fr 1fr}
+  .det-grid{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- CONFIG MODAL -->
+<div class="modal-overlay" id="cfgModal">
+  <div class="modal-box">
+    <h2>🔧 Firebase Setup</h2>
+    <p class="modal-sub">Paste your Firebase credentials. One-time setup — saved in browser.</p>
+    <div class="cfg-field"><label>API Key</label><input id="c_key" placeholder="AIzaSy..."></div>
+    <div class="cfg-field"><label>Auth Domain</label><input id="c_auth" placeholder="your-app.firebaseapp.com"></div>
+    <div class="cfg-field"><label>Project ID</label><input id="c_proj" placeholder="your-project-id"></div>
+    <div class="cfg-field"><label>App ID</label><input id="c_app" placeholder="1:123456:web:abc..."></div>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeCfg()">Cancel</button>
+      <button class="btn-save" onclick="saveCfg()">Save & Connect</button>
+    </div>
+    <div class="how-to">
+      <div class="ht">📋 HOW TO GET CREDENTIALS (5 MIN)</div>
+      <ol>
+        <li>Go to <strong>console.firebase.google.com</strong> → <strong>Add project</strong></li>
+        <li>Click <strong>Web (&lt;/&gt;)</strong> icon → Register → copy <code>firebaseConfig</code></li>
+        <li>Enable <strong>Authentication → Email/Password</strong> sign-in</li>
+        <li>Enable <strong>Firestore Database</strong> → Start in test mode</li>
+        <li>Go to <strong>Authentication → Users → Add User</strong> (email + password)</li>
+        <li><strong>First user to log in</strong> becomes Admin automatically</li>
+        <li>Admin can promote/demote others in the <strong>Admin tab</strong></li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+<!-- LOGIN -->
+<div id="loginScreen" class="screen">
+  <div class="login-wrap">
+    <div class="login-brand">
+      <div class="login-icon">🏥</div>
+      <h1>Clinic Stats</h1>
+      <p>Daily Operations · Multi-User</p>
+    </div>
+    <div class="login-card">
+      <div id="loginErr" class="login-err"></div>
+      <div class="lf-group">
+        <label>Email</label>
+        <input type="email" id="lEmail" placeholder="you@clinic.com" autocomplete="email">
+      </div>
+      <div class="lf-group">
+        <label>Password</label>
+        <input type="password" id="lPass" placeholder="••••••••" autocomplete="current-password">
+      </div>
+      <button class="btn-login" id="lBtn" onclick="doLogin()">Sign In</button>
+    </div>
+    <div class="login-footer">
+      <span>First time? </span><a href="#" onclick="openCfg();return false">Setup Firebase →</a>
+    </div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="appScreen" class="screen">
+  <div class="topbar">
+    <div class="tb-left">
+      <div class="tb-icon">🏥</div>
+      <div>
+        <div class="tb-title">Clinic Stats</div>
+        <div class="tb-date" id="tbDate"></div>
+      </div>
+    </div>
+    <div class="tb-right">
+      <div class="user-pill">
+        <div class="user-avatar" id="uAv"></div>
+        <div class="user-name" id="uNm"></div>
+        <div class="role-tag" id="uRl"></div>
+      </div>
+      <button class="btn-out" onclick="doLogout()">⏏</button>
+    </div>
+  </div>
+
+  <div class="pages">
+    <div class="page active" id="pg-home"></div>
+    <div class="page"        id="pg-entry"></div>
+    <div class="page"        id="pg-records"></div>
+    <div class="page"        id="pg-admin"></div>
+  </div>
+
+  <nav class="bottom-nav">
+    <button class="nav-btn active" data-p="home"    onclick="go('home')"><span class="ni">📊</span>Dashboard</button>
+    <button class="nav-btn"        data-p="entry"   id="navEntry" onclick="goEntry()"><span class="ni">✏️</span>Entry</button>
+    <button class="nav-btn"        data-p="records" onclick="go('records')"><span class="ni">📋</span>Records</button>
+    <button class="nav-btn"        data-p="admin"   id="navAdmin" style="display:none" onclick="go('admin')"><span class="ni">⚙️</span>Admin</button>
+  </nav>
+</div>
+
+<div class="toast" id="toastEl"></div>
+
+<script>
+let db,auth,CU,CR;
+
+// ── CONFIG ───────────────────────────────────────────────
+function loadCfg(){try{return JSON.parse(localStorage.getItem('fbCfg')||'null')}catch{return null}}
+function openCfg(){
+  const c=loadCfg();
+  if(c){['c_key','c_auth','c_proj','c_app'].forEach((id,i)=>{
+    document.getElementById(id).value=[c.apiKey,c.authDomain,c.projectId,c.appId][i]||'';
+  })}
+  document.getElementById('cfgModal').classList.add('open');
+}
+function closeCfg(){document.getElementById('cfgModal').classList.remove('open')}
+function saveCfg(){
+  const cfg={apiKey:$('c_key').value.trim(),authDomain:$('c_auth').value.trim(),projectId:$('c_proj').value.trim(),appId:$('c_app').value.trim()};
+  if(!cfg.apiKey||!cfg.projectId){alert('API Key and Project ID required');return}
+  localStorage.setItem('fbCfg',JSON.stringify(cfg));
+  closeCfg();initFB(cfg);
+  toast('Firebase set up! You can sign in.','ok');
+}
+function initFB(cfg){
+  try{
+    if(firebase.apps.length)firebase.apps[0].delete().then(()=>_fb(cfg));
+    else _fb(cfg);
+  }catch{_fb(cfg)}
+}
+function _fb(cfg){
+  try{
+    firebase.initializeApp(cfg);
+    db=firebase.firestore(); auth=firebase.auth();
+    auth.onAuthStateChanged(onAuth);
+  }catch(e){toast('Firebase error: '+e.message,'err')}
+}
+
+// ── AUTH ─────────────────────────────────────────────────
+async function onAuth(user){
+  if(!user){CU=null;CR=null;showLogin();return}
+  CU=user;
+  try{
+    const doc=await db.collection('users').doc(user.uid).get();
+    if(!doc.exists){
+      const all=await db.collection('users').get();
+      CR=all.empty?'admin':'staff';
+      await db.collection('users').doc(user.uid).set({email:user.email,role:CR,createdAt:firebase.firestore.FieldValue.serverTimestamp()});
+    }else{CR=doc.data().role||'staff'}
+  }catch{CR='staff'}
+  showApp();
+}
+async function doLogin(){
+  const email=$('lEmail').value.trim(),pass=$('lPass').value;
+  const btn=$('lBtn'),err=$('loginErr');
+  err.style.display='none';btn.innerHTML='<span class="spin"></span>';btn.disabled=true;
+  try{await auth.signInWithEmailAndPassword(email,pass)}
+  catch(e){err.textContent=e.message;err.style.display='block';btn.innerHTML='Sign In';btn.disabled=false}
+}
+function doLogout(){auth.signOut()}
+
+function showLogin(){$('loginScreen').classList.add('active');$('appScreen').classList.remove('active')}
+function showApp(){
+  $('loginScreen').classList.remove('active');
+  $('appScreen').classList.add('active');
+  // topbar
+  const init=CU.email.substring(0,2).toUpperCase();
+  const av=$('uAv'); av.textContent=init; av.className='user-avatar '+CR;
+  $('uNm').textContent=CU.email.split('@')[0];
+  const rt=$('uRl'); rt.textContent=CR.toUpperCase(); rt.className='role-tag '+CR;
+  $('tbDate').textContent=new Date().toLocaleDateString('en-IN',{weekday:'short',day:'numeric',month:'short',year:'numeric'});
+  // nav
+  $('navAdmin').style.display=CR==='admin'?'':'none';
+  const ne=$('navEntry');
+  if(CR==='admin'){ne.classList.remove('locked')}
+  else{ne.classList.add('locked')}
+  go('home');
+}
+
+// ── ROUTING ──────────────────────────────────────────────
+let curP='home';
+function goEntry(){
+  if(CR!=='admin'){toast('🔒 Only Admin can add entries','err');return}
+  go('entry');
+}
+function go(p){
+  if(p==='admin'&&CR!=='admin'){toast('Admin only','err');return}
+  curP=p;
+  ['home','entry','records','admin'].forEach(x=>{
+    $('pg-'+x).classList.toggle('active',x===p);
+    qs(`[data-p="${x}"]`)?.classList.toggle('active',x===p);
+  });
+  if(p==='home')    renderHome();
+  if(p==='entry')   renderEntry();
+  if(p==='records') renderRecords();
+  if(p==='admin')   renderAdmin();
+}
+
+// ── HOME ─────────────────────────────────────────────────
+async function renderHome(){
+  const el=$('pg-home');
+  el.innerHTML='<div class="loading"><span class="spin"></span> Loading...</div>';
+  try{
+    const now=new Date();
+    const mKey=`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+    const todayStr=now.toISOString().split('T')[0];
+    let td=null;
+    try{const ts=await db.collection('entries').doc(todayStr).get();if(ts.exists)td=ts.data()}catch{}
+    const ms=await db.collection('entries').where('month','==',mKey).orderBy('date','asc').get();
+    const mD=ms.docs.map(d=>d.data());
+    const mRev=mD.reduce((s,r)=>s+(parseFloat(r.collection)||0),0);
+    const mPts=mD.reduce((s,r)=>s+(parseInt(r.totalPatient)||0),0);
+    const rs=await db.collection('entries').orderBy('date','desc').limit(6).get();
+    const rD=rs.docs.map(d=>({id:d.id,...d.data()}));
+    const mLabel=now.toLocaleDateString('en-IN',{month:'long',year:'numeric'});
+    const avg=mD.length?mRev/mD.length:0;
+
+    el.innerHTML=`
+      ${!td
+        ?`<div class="card" style="background:linear-gradient(135deg,rgba(251,191,36,.08),rgba(251,113,133,.05));border-color:rgba(251,191,36,.28)">
+            <div style="display:flex;align-items:center;gap:12px">
+              <span style="font-size:24px">📝</span>
+              <div style="flex:1"><div style="font-size:.85rem;font-weight:700;color:var(--gold)">Today's entry pending</div>
+              <div style="font-size:.7rem;color:var(--muted);margin-top:2px">${now.toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long'})}</div></div>
+              ${CR==='admin'?`<button onclick="go('entry')" style="padding:8px 14px;background:linear-gradient(135deg,var(--sky2),var(--sky));border:none;border-radius:8px;color:#fff;font-size:.75rem;font-weight:700;flex-shrink:0">Add →</button>`:''}
+            </div></div>`
+        :`<div class="card" style="background:rgba(134,239,172,.05);border-color:rgba(134,239,172,.22)">
+            <div style="display:flex;align-items:center;gap:12px">
+              <span style="font-size:24px">✅</span>
+              <div><div style="font-size:.85rem;font-weight:700;color:var(--lime)">Today recorded</div>
+              <div style="font-size:.7rem;color:var(--muted);margin-top:2px">₹${fmt(td.collection)} · ${td.totalPatient||0} patients</div></div>
+            </div></div>`}
+      <div class="kpis">
+        <div class="kpi sky"><div class="kpi-lbl">Month Revenue</div><div class="kpi-val">₹${fmtK(mRev)}</div><div class="kpi-sub">${mLabel}</div></div>
+        <div class="kpi teal"><div class="kpi-lbl">Month Patients</div><div class="kpi-val">${mPts.toLocaleString('en-IN')}</div><div class="kpi-sub">${mD.length} working days</div></div>
+        <div class="kpi gold"><div class="kpi-lbl">Avg Daily</div><div class="kpi-val">${avg?'₹'+fmtK(avg):'–'}</div><div class="kpi-sub">This month</div></div>
+        <div class="kpi violet"><div class="kpi-lbl">Today</div><div class="kpi-val">${td?'₹'+fmtK(td.collection):'–'}</div><div class="kpi-sub">${td?td.totalPatient+' patients':'Pending'}</div></div>
+      </div>
+      ${mD.length>1?`<div class="section-hd"><div class="sdot"></div><h2>Daily – ${now.toLocaleDateString('en-IN',{month:'short'})}</h2></div>
+      <div class="card" style="padding:14px 12px"><canvas id="mc" height="130" style="width:100%"></canvas></div>`:''}
+      <div class="section-hd" style="margin-top:4px">
+        <div class="sdot" style="background:var(--gold);box-shadow:0 0 7px var(--gold)"></div>
+        <h2>Recent</h2><span class="ct">${rD.length} shown</span>
+      </div>
+      ${rD.length?`<div class="rec-list">${rD.map(r=>rcHTML(r)).join('')}</div>`:'<div class="empty"><div class="ei">📭</div><p>No entries yet</p></div>'}
+    `;
+    if(mD.length>1)miniChart(mD);
+    bindCards(el);
+  }catch(e){el.innerHTML=`<div class="card"><p style="color:var(--rose);font-size:.8rem">Error: ${e.message}</p></div>`}
+}
+
+function miniChart(data){
+  const cv=document.getElementById('mc');if(!cv)return;
+  const dpr=window.devicePixelRatio||1,W=cv.offsetWidth,H=130;
+  cv.width=W*dpr;cv.height=H*dpr;
+  const ctx=cv.getContext('2d');ctx.scale(dpr,dpr);
+  const vals=data.map(d=>parseFloat(d.collection)||0);
+  const max=Math.max(...vals)||1;
+  const pad={l:8,r:8,t:8,b:22};
+  const bw=(W-pad.l-pad.r)/vals.length;
+  vals.forEach((v,i)=>{
+    const bh=(v/max)*(H-pad.t-pad.b);
+    const x=pad.l+i*bw+bw*.1,y=H-pad.b-bh;
+    ctx.fillStyle=v===max?'#fbbf24':'rgba(56,189,248,0.55)';
+    ctx.beginPath();
+    if(ctx.roundRect)ctx.roundRect(x,y,bw*.8,bh,3);else ctx.rect(x,y,bw*.8,bh);
+    ctx.fill();
+    if(i%5===0||i===vals.length-1){
+      ctx.fillStyle='#475569';ctx.font='9px Plus Jakarta Sans';
+      ctx.textAlign='center';
+      ctx.fillText(data[i].date?.split('-')[2]||'',x+bw*.4,H-5);
+    }
+  });
+}
+
+// ── ENTRY (ADMIN ONLY) ───────────────────────────────────
+function renderEntry(){
+  const el=$('pg-entry');
+  const isAdmin=CR==='admin';
+  const D=isAdmin?'':'disabled';
+  const today=new Date().toISOString().split('T')[0];
+
+  el.innerHTML=`
+    <div class="section-hd"><div class="sdot"></div><h2>Daily Entry</h2></div>
+    <div class="lock-banner ${isAdmin?'':'show'}">
+      <span class="lb-icon">🔒</span>
+      <div class="lb-text">
+        <h3>Admin Access Required</h3>
+        <p>Only the Admin account can add or edit daily entries. Staff accounts are view-only.</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="fsec">
+        <div class="fsec-title">📅 Date &amp; Collection</div>
+        <div class="frow c2">
+          <div class="fg"><label>Report Date *</label><input type="date" id="f_date" value="${today}" max="${today}" ${D}></div>
+          <div class="fg"><label>Daily Collection ₹ *</label><input type="number" id="f_col" placeholder="0" min="0" ${D} oninput="chkPay()"></div>
+        </div>
+      </div>
+      <div class="fsec">
+        <div class="fsec-title">💳 Payment Breakdown</div>
+        <div class="frow c3">
+          <div class="fg"><label>Paytm/UPI ₹</label><input type="number" id="f_paytm" placeholder="0" min="0" ${D} oninput="chkPay()"></div>
+          <div class="fg"><label>Card ₹</label><input type="number" id="f_card" placeholder="0" min="0" ${D} oninput="chkPay()"></div>
+          <div class="fg"><label>Cash ₹</label><input type="number" id="f_cash" placeholder="0" min="0" ${D} oninput="chkPay()"></div>
+        </div>
+        <div class="pay-check" id="payChk">Enter amounts to verify split</div>
+      </div>
+      <div class="fsec">
+        <div class="fsec-title">🧑‍⚕️ Patient Counts</div>
+        <div class="frow c3">
+          <div class="fg"><label>Total Patients</label><input type="number" id="f_tp" placeholder="0" min="0" ${D}></div>
+          <div class="fg"><label>Lab</label><input type="number" id="f_lab" placeholder="0" min="0" ${D}></div>
+          <div class="fg"><label>X-Ray</label><input type="number" id="f_xray" placeholder="0" min="0" ${D}></div>
+        </div>
+        <div class="frow c3">
+          <div class="fg"><label>Scanning</label><input type="number" id="f_scan" placeholder="0" min="0" ${D}></div>
+          <div class="fg"><label>ECG</label><input type="number" id="f_ecg" placeholder="0" min="0" ${D}></div>
+          <div class="fg"><label>Echo</label><input type="number" id="f_echo" placeholder="0" min="0" ${D}></div>
+        </div>
+        <div class="frow c3">
+          <div class="fg"><label>BP</label><input type="number" id="f_bp" placeholder="0" min="0" ${D}></div>
+          <div class="fg"><label>GRBS</label><input type="number" id="f_grbs" placeholder="0" min="0" ${D}></div>
+          <div class="fg"><label>Consultations</label><input type="number" id="f_cons" placeholder="0" min="0" ${D}></div>
+        </div>
+      </div>
+      <div class="fsec">
+        <div class="fsec-title">👥 Staff Information</div>
+        <div class="fg"><label>Staff on Leave</label><input type="text" id="f_leave" placeholder="e.g. SHEELA, AKASH (half day)" ${D}></div>
+        <div class="fg"><label>Staff on Permission</label><input type="text" id="f_perm" placeholder="e.g. UMA (2 hours), LALITHA (1.5 hrs)" ${D}></div>
+      </div>
+      <div class="fsec">
+        <div class="fsec-title">📝 Notes &amp; Remarks</div>
+        <div class="fg"><label>Alter / Cancel Invoice</label><input type="text" id="f_alt" placeholder="e.g. Bill No. 24562 changed" ${D}></div>
+        <div class="frow c2">
+          <div class="fg"><label>E-Mail Count</label><input type="number" id="f_email" placeholder="0" min="0" ${D}></div>
+        </div>
+        <div class="fg"><label>Any Other Remarks</label><textarea id="f_other" placeholder="Lift not working, Dr Darshan on leave..." ${D}></textarea></div>
+      </div>
+      ${isAdmin
+        ?`<button class="btn-submit" id="subBtn" onclick="submitEntry()">💾 Save Daily Entry</button>
+           <div class="sub-ok" id="subOk">✅ Entry saved successfully!</div>`
+        :`<div style="text-align:center;padding:12px 0;font-size:.78rem;color:var(--muted)">🔒 Sign in as Admin to save entries</div>`}
+    </div>`;
+}
+
+function chkPay(){
+  const col=parseFloat($('f_col')?.value)||0;
+  const s=(parseFloat($('f_paytm')?.value)||0)+(parseFloat($('f_card')?.value)||0)+(parseFloat($('f_cash')?.value)||0);
+  const el=$('payChk');if(!el)return;
+  if(s){
+    const ok=Math.abs(s-col)<1;
+    el.className='pay-check '+(ok?'ok':'warn');
+    el.textContent=ok?`✓ Total ₹${fmt(s)} matches collection`:`⚠ Total ₹${fmt(s)} ≠ Collection ₹${fmt(col)}`;
+  }else{el.className='pay-check';el.textContent='Enter amounts to verify split'}
+}
+
+async function submitEntry(){
+  if(CR!=='admin'){toast('🔒 Admin only','err');return}
+  const date=$('f_date').value,col=$('f_col').value;
+  if(!date||!col){toast('Date & Collection required','err');return}
+  const btn=$('subBtn');
+  btn.innerHTML='<span class="spin"></span> Saving...';btn.disabled=true;
+  const e2={
+    date,month:date.slice(0,7),
+    collection:parseFloat(col)||0,
+    paytm:parseFloat($('f_paytm').value)||0,
+    card:parseFloat($('f_card').value)||0,
+    cash:parseFloat($('f_cash').value)||0,
+    totalPatient:parseInt($('f_tp').value)||0,
+    lab:parseInt($('f_lab').value)||0,
+    xray:parseInt($('f_xray').value)||0,
+    scan:parseInt($('f_scan').value)||0,
+    ecg:parseInt($('f_ecg').value)||0,
+    echo:parseInt($('f_echo').value)||0,
+    bp:parseInt($('f_bp').value)||0,
+    grbs:parseInt($('f_grbs').value)||0,
+    consultation:parseInt($('f_cons').value)||0,
+    staffLeave:$('f_leave').value.trim(),
+    staffPerm:$('f_perm').value.trim(),
+    alterCancel:$('f_alt').value.trim(),
+    emailCount:parseInt($('f_email').value)||0,
+    anyOther:$('f_other').value.trim(),
+    enteredBy:CU.email,
+    updatedAt:firebase.firestore.FieldValue.serverTimestamp(),
+  };
+  try{
+    await db.collection('entries').doc(date).set(e2);
+    $('subOk').style.display='block';toast('Entry saved!','ok');
+    btn.innerHTML='✓ Saved!';btn.style.background='linear-gradient(135deg,#059669,var(--teal))';
+    setTimeout(()=>{btn.innerHTML='💾 Save Daily Entry';btn.style.background='';btn.disabled=false;$('subOk').style.display='none'},2600);
+  }catch(e){toast('Error: '+e.message,'err');btn.innerHTML='💾 Save Daily Entry';btn.disabled=false}
+}
+
+// ── RECORDS ──────────────────────────────────────────────
+let allRec=[];
+async function renderRecords(){
+  const el=$('pg-records');
+  el.innerHTML=`
+    <div class="section-hd"><div class="sdot"></div><h2>Records</h2></div>
+    <div class="filter-bar">
+      <select id="fMo" onchange="applyFilter()">${mOpts()}</select>
+      <input type="text" id="fSr" placeholder="Search…" oninput="applyFilter()">
+    </div>
+    <div id="rCont"><div class="loading"><span class="spin"></span> Loading...</div></div>`;
+  try{
+    const s=await db.collection('entries').orderBy('date','desc').limit(300).get();
+    allRec=s.docs.map(d=>({id:d.id,...d.data()}));
+    applyFilter();
+  }catch(e){$('rCont').innerHTML=`<div class="card"><p style="color:var(--rose);font-size:.8rem">Error: ${e.message}</p></div>`}
+}
+
+function mOpts(){
+  const a=['<option value="">All Months</option>'],now=new Date();
+  for(let i=0;i<24;i++){
+    const d=new Date(now.getFullYear(),now.getMonth()-i,1);
+    const v=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+    a.push(`<option value="${v}">${d.toLocaleDateString('en-IN',{month:'long',year:'numeric'})}</option>`);
+  }
+  return a.join('');
+}
+
+function applyFilter(){
+  const mo=$('fMo')?.value||'',sr=($('fSr')?.value||'').toLowerCase();
+  let f=allRec;
+  if(mo)f=f.filter(r=>r.month===mo);
+  if(sr)f=f.filter(r=>r.date?.includes(sr)||r.staffLeave?.toLowerCase().includes(sr)||r.anyOther?.toLowerCase().includes(sr)||r.alterCancel?.toLowerCase().includes(sr)||r.enteredBy?.toLowerCase().includes(sr));
+  const cont=$('rCont');if(!cont)return;
+  if(!f.length){cont.innerHTML='<div class="empty"><div class="ei">🔍</div><p>No records found</p></div>';return}
+  let html='';
+  if(!mo&&!sr){
+    const bM={};
+    f.forEach(r=>{if(!bM[r.month])bM[r.month]={rev:0,pts:0,days:0};bM[r.month].rev+=parseFloat(r.collection)||0;bM[r.month].pts+=parseInt(r.totalPatient)||0;bM[r.month].days++});
+    const rows=Object.entries(bM).sort((a,b)=>b[0].localeCompare(a[0])).map(([m,v])=>{
+      const[yr,mo2]=m.split('-');
+      const lbl=new Date(parseInt(yr),parseInt(mo2)-1,1).toLocaleDateString('en-IN',{month:'short',year:'numeric'});
+      return`<tr><td class="mo">${lbl}</td><td class="rv">₹${fmt(v.rev)}</td><td class="pt">${v.pts.toLocaleString('en-IN')}</td><td style="color:var(--muted)">${v.days}</td></tr>`;
+    }).join('');
+    html+=`<div class="card" style="padding:14px">
+      <div class="card-hd"><span class="card-title">Monthly Summary</span><span class="badge">${Object.keys(bM).length} months</span></div>
+      <div style="overflow-x:auto"><table class="sum-table"><thead><tr><th>Month</th><th>Revenue</th><th>Patients</th><th>Days</th></tr></thead><tbody>${rows}</tbody></table></div></div>`;
+  }
+  html+=`<div class="section-hd" style="margin-top:4px">
+    <div class="sdot" style="background:var(--violet);box-shadow:0 0 7px var(--violet)"></div>
+    <h2>Daily Entries</h2><span class="ct">${f.length} records</span></div>
+  <div class="rec-list">${f.map(r=>rcHTML(r)).join('')}</div>`;
+  cont.innerHTML=html;
+  bindCards(cont);
+}
+
+function rcHTML(r){
+  const dt=r.date?new Date(r.date+'T00:00:00').toLocaleDateString('en-IN',{weekday:'short',day:'numeric',month:'short',year:'numeric'}):r.date;
+  const notes=[r.staffLeave,r.anyOther].filter(x=>x&&x.toLowerCase()!=='nill'&&x!=='0').join(' · ');
+  return`<div class="rec-card">
+    <div class="rec-top"><div class="rec-date">${dt}</div><div class="rec-col">₹${fmt(r.collection)}</div></div>
+    <div class="rec-chips">
+      <div class="chip">👥 <b>${r.totalPatient||0}</b></div>
+      <div class="chip">🧪 <b>${r.lab||0}</b> lab</div>
+      ${r.xray?`<div class="chip">☢ <b>${r.xray}</b> xray</div>`:''}
+      ${r.scan?`<div class="chip">📡 <b>${r.scan}</b> scan</div>`:''}
+      ${r.ecg?`<div class="chip">💓 <b>${r.ecg}</b> ecg</div>`:''}
+      ${r.echo?`<div class="chip">🔊 <b>${r.echo}</b> echo</div>`:''}
+    </div>
+    ${notes?`<div class="rec-note">${notes}</div>`:''}
+    <div class="rec-detail">
+      <div class="det-grid">
+        <div class="ditem"><div class="dl">Paytm/UPI</div><div class="dv">₹${fmt(r.paytm)}</div></div>
+        <div class="ditem"><div class="dl">Card</div><div class="dv">₹${fmt(r.card)}</div></div>
+        <div class="ditem"><div class="dl">Cash</div><div class="dv">₹${fmt(r.cash)}</div></div>
+        <div class="ditem"><div class="dl">BP</div><div class="dv">${r.bp||0}</div></div>
+        <div class="ditem"><div class="dl">GRBS</div><div class="dv">${r.grbs||0}</div></div>
+        <div class="ditem"><div class="dl">Consult</div><div class="dv">${r.consultation||0}</div></div>
+        ${r.staffLeave?`<div class="ditem wide"><div class="dl">Staff Leave</div><div class="dv">${r.staffLeave}</div></div>`:''}
+        ${r.staffPerm?`<div class="ditem wide"><div class="dl">Permission</div><div class="dv">${r.staffPerm}</div></div>`:''}
+        ${r.alterCancel?`<div class="ditem wide"><div class="dl">Alter/Cancel</div><div class="dv">${r.alterCancel}</div></div>`:''}
+        ${r.anyOther?`<div class="ditem wide"><div class="dl">Remarks</div><div class="dv">${r.anyOther}</div></div>`:''}
+        <div class="ditem wide"><div class="dl">Entered by</div><div class="dv" style="color:var(--muted);font-size:.72rem">${r.enteredBy||'–'}</div></div>
+      </div>
+      ${CR==='admin'?`<button class="btn-del" onclick="delEntry('${r.id||r.date}',event)">🗑 Delete Entry</button>`:''}
+    </div>
+  </div>`;
+}
+function bindCards(p){p.querySelectorAll('.rec-card').forEach(c=>{c.addEventListener('click',()=>c.querySelector('.rec-detail')?.classList.toggle('open'))})}
+async function delEntry(id,e){
+  e.stopPropagation();
+  if(CR!=='admin'){toast('Admin only','err');return}
+  if(!confirm('Delete this entry?'))return;
+  try{await db.collection('entries').doc(id).delete();allRec=allRec.filter(r=>(r.id||r.date)!==id);applyFilter();toast('Deleted','ok')}
+  catch(err){toast('Error: '+err.message,'err')}
+}
+
+// ── ADMIN ────────────────────────────────────────────────
+async function renderAdmin(){
+  if(CR!=='admin')return;
+  const el=$('pg-admin');
+  el.innerHTML='<div class="loading"><span class="spin"></span> Loading...</div>';
+  try{
+    const uS=await db.collection('users').get();
+    const users=uS.docs.map(d=>({id:d.id,...d.data()}));
+    const aS=await db.collection('entries').get();
+    const aE=aS.docs.map(d=>d.data());
+    const totRev=aE.reduce((s,r)=>s+(parseFloat(r.collection)||0),0);
+    const totPts=aE.reduce((s,r)=>s+(parseInt(r.totalPatient)||0),0);
+
+    el.innerHTML=`
+      <div class="section-hd"><div class="sdot" style="background:var(--gold);box-shadow:0 0 7px var(--gold)"></div><h2>Admin Panel</h2></div>
+      <div class="kpis">
+        <div class="kpi sky"><div class="kpi-lbl">Total Revenue</div><div class="kpi-val">₹${fmtK(totRev)}</div><div class="kpi-sub">All time</div></div>
+        <div class="kpi teal"><div class="kpi-lbl">Total Patients</div><div class="kpi-val">${totPts.toLocaleString('en-IN')}</div><div class="kpi-sub">All entries</div></div>
+        <div class="kpi gold"><div class="kpi-lbl">Days Recorded</div><div class="kpi-val">${aE.length}</div><div class="kpi-sub">Total entries</div></div>
+        <div class="kpi violet"><div class="kpi-lbl">Users</div><div class="kpi-val">${users.length}</div><div class="kpi-sub">Registered</div></div>
+      </div>
+      <div class="section-hd"><div class="sdot" style="background:var(--violet);box-shadow:0 0 7px var(--violet)"></div><h2>User Management</h2></div>
+      <div class="card" style="padding:14px">
+        <div class="user-list">
+          ${users.map(u=>`<div class="user-row">
+            <div class="uinfo">
+              <div class="uname">${u.email?.split('@')[0]||'?'}</div>
+              <div class="uemail">${u.email||''}
+                ${u.role==='admin'?' <span style="font-size:.6rem;color:var(--sky)">· Can enter data</span>':' <span style="font-size:.6rem;color:var(--muted)">· View only</span>'}
+              </div>
+            </div>
+            <button class="role-btn ${u.role||'staff'}" onclick="toggleRole('${u.id}','${u.role||'staff'}',this)">${(u.role||'staff').toUpperCase()}</button>
+          </div>`).join('')}
+        </div>
+        <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--bd);font-size:.7rem;color:var(--muted)">
+          Tap a role to toggle Admin ↔ Staff.<br>Add new users: Firebase Console → Authentication → Add User.
+        </div>
+      </div>
+      <div class="section-hd"><div class="sdot" style="background:var(--lime);box-shadow:0 0 7px var(--lime)"></div><h2>Export Data</h2></div>
+      <div class="card"><p style="font-size:.78rem;color:var(--muted);margin-bottom:14px">Download all entries as CSV — open in Excel or Google Sheets.</p>
+        <button class="btn-submit" onclick="exportCSV()" style="background:linear-gradient(135deg,#059669,var(--teal))">📥 Download All Data as CSV</button>
+      </div>
+      <div class="section-hd"><div class="sdot" style="background:var(--rose);box-shadow:0 0 7px var(--rose)"></div><h2>Settings</h2></div>
+      <div class="card"><p style="font-size:.78rem;color:var(--muted);margin-bottom:14px">Change Firebase project or reconnect database.</p>
+        <button class="btn-submit" onclick="openCfg()" style="background:linear-gradient(135deg,#7c3aed,var(--violet))">🔧 Edit Firebase Config</button>
+      </div>`;
+  }catch(e){el.innerHTML=`<div class="card"><p style="color:var(--rose);font-size:.8rem">Error: ${e.message}</p></div>`}
+}
+
+async function toggleRole(uid,cur,btn){
+  if(uid===CU?.uid){toast("Can't change your own role",'err');return}
+  const nr=cur==='admin'?'staff':'admin';
+  try{await db.collection('users').doc(uid).update({role:nr});btn.textContent=nr.toUpperCase();btn.className='role-btn '+nr;toast(`Role → ${nr}`,'ok')}
+  catch(e){toast('Error: '+e.message,'err')}
+}
+
+async function exportCSV(){
+  try{
+    const s=await db.collection('entries').orderBy('date','asc').get();
+    const rows=s.docs.map(d=>d.data());
+    const hdr=['Date','Month','Collection','Paytm','Card','Cash','Total Patient','Lab','Xray','Scan','ECG','Echo','BP','GRBS','Consultation','Staff Leave','Staff Permission','Alter/Cancel','Email Count','Any Other','Entered By'];
+    const csv=[hdr.join(','),...rows.map(r=>[
+      r.date,r.month,r.collection,r.paytm,r.card,r.cash,
+      r.totalPatient,r.lab,r.xray,r.scan,r.ecg,r.echo,r.bp,r.grbs,r.consultation,
+      `"${(r.staffLeave||'').replace(/"/g,'""')}"`,
+      `"${(r.staffPerm||'').replace(/"/g,'""')}"`,
+      `"${(r.alterCancel||'').replace(/"/g,'""')}"`,
+      r.emailCount,
+      `"${(r.anyOther||'').replace(/"/g,'""')}"`,
+      r.enteredBy
+    ].join(','))].join('\n');
+    const a=document.createElement('a');
+    a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
+    a.download=`clinic_${new Date().toISOString().split('T')[0]}.csv`;
+    a.click();toast('CSV downloaded!','ok');
+  }catch(e){toast('Error: '+e.message,'err')}
+}
+
+// ── UTILS ────────────────────────────────────────────────
+function $(id){return document.getElementById(id)}
+function qs(s){return document.querySelector(s)}
+function fmt(n){return(parseFloat(n)||0).toLocaleString('en-IN')}
+function fmtK(n){n=parseFloat(n)||0;if(n>=100000)return(n/100000).toFixed(1)+'L';if(n>=1000)return(n/1000).toFixed(1)+'K';return n.toLocaleString('en-IN')}
+function toast(msg,type=''){const t=$('toastEl');t.textContent=msg;t.className='toast '+type+' on';setTimeout(()=>t.className='toast '+type,2600)}
+
+document.addEventListener('keydown',e=>{if(e.key==='Enter'&&$('loginScreen').classList.contains('active'))doLogin()});
+
+// ── BOOT ─────────────────────────────────────────────────
+(function boot(){
+  const cfg=loadCfg();
+  if(cfg?.apiKey){initFB(cfg);return}
+  $('loginScreen').classList.add('active');
+  const lc=$('loginScreen').querySelector('.login-card');
+  const b=document.createElement('div');
+  b.style.cssText='background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.25);border-radius:11px;padding:13px 15px;margin-bottom:16px';
+  b.innerHTML=`<div style="font-size:.78rem;font-weight:700;color:var(--gold);margin-bottom:4px">⚡ First-time setup needed</div>
+    <div style="font-size:.7rem;color:var(--muted);line-height:1.5;margin-bottom:10px">Connect your free Firebase database before signing in.</div>
+    <button onclick="openCfg()" style="width:100%;padding:9px;background:linear-gradient(135deg,var(--sky2),var(--sky));border:none;border-radius:8px;color:#fff;font-size:.8rem;font-weight:700;cursor:pointer">⚙ Setup Firebase Database →</button>`;
+  lc.insertBefore(b,lc.querySelector('.lf-group'));
+})();
+</script>
+</body>
+</html>
