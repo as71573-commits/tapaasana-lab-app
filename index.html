@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Monthly Statistics Dashboard</title>
+<title>Tapaasana Diagnostics Statistics</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
@@ -247,7 +247,7 @@
   .month-card:hover { border-color: var(--accent); transform: translateY(-2px); }
   .month-card.selected { border-color: var(--accent); background: rgba(0,212,255,.05); }
   .month-card-name { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 2px; color: var(--text-muted); margin-bottom: 6px; }
-  .month-card-revenue { font-size: 1.4rem; font-weight: 700; color: #fff; }
+  .month-card-collection { font-size: 1.4rem; font-weight: 700; color: #fff; }
   .month-card-patients { font-size: 0.78rem; color: var(--text-muted); margin-top: 4px; }
   .month-card-bar {
     height: 3px;
@@ -282,12 +282,12 @@
 <div class="header">
   <div class="header-top">
     <div>
-      <div class="clinic-name">Clinic Monthly Statistics</div>
-      <div class="clinic-sub">Daily Operations Report &nbsp;·&nbsp; April 2025 – December 2025</div>
+      <div class="clinic-name">Tapaasana Diagnostics Statistics</div>
+      <div class="clinic-sub">Daily Operations Report &nbsp;·&nbsp; April 2025 – March 2026</div>
     </div>
     <div class="period-badge">
-      <span>9 Months Covered</span>
-      <strong>Apr – Dec 2025</strong>
+      <span>12 Months Covered</span>
+      <strong>Apr 2025 – Mar 2026</strong>
     </div>
   </div>
 </div>
@@ -639,6 +639,118 @@ const months = [
       {date:'31 Dec',col:21195,cum:775180,paytm:9220,card:0,cash:11975,tp:41,lab:26,xray:2,scan:9,ecg:9,echo:3,bp:0,grbs:0,leave:'VIDHYA & CHAITHRA & SUSHEELA',perm:'NILL',notes:'NILL'},
     ]
   },
+  {
+    id: 'jan26', name: 'January 2026', shortName: 'Jan',
+    total: 891455, paytm: 417305, card: 73295, cash: 400855,
+    patients: 1412, lab: 1062, xray: 119, scan: 234, ecg: 114, echo: 39,
+    days: [
+      {date:'01 Jan',col:13435,cum:0,paytm:7745,card:500,cash:5190,tp:15,lab:13,xray:1,scan:3,ecg:2,echo:0,bp:0,grbs:0,leave:'VIDHYA, JYOTHI (HALF DAY)',perm:'NILL',notes:'NILL'},
+      {date:'02 Jan',col:27475,cum:40910,paytm:7715,card:6995,cash:12765,tp:44,lab:28,xray:10,scan:9,ecg:5,echo:0,bp:5,grbs:2,leave:'VIDHYA',perm:'NILL',notes:'NILL'},
+      {date:'03 Jan',col:25215,cum:66125,paytm:21700,card:0,cash:3515,tp:51,lab:35,xray:3,scan:0,ecg:6,echo:9,bp:5,grbs:1,leave:'VIDHYA',perm:'NILL',notes:'NILL'},
+      {date:'04 Jan',col:29540,cum:95665,paytm:22055,card:3175,cash:4310,tp:45,lab:45,xray:0,scan:0,ecg:0,echo:0,bp:0,grbs:0,leave:'',perm:'NILL',notes:'NILL'},
+      {date:'05 Jan',col:34210,cum:130175,paytm:19270,card:5250,cash:9690,tp:57,lab:40,xray:6,scan:12,ecg:5,echo:0,bp:8,grbs:0,leave:'VIDHYA AKSHITH LALITHAMMA',perm:'NILL',notes:'NILL'},
+      {date:'06 Jan',col:31310,cum:161485,paytm:16835,card:390,cash:14085,tp:50,lab:40,xray:3,scan:11,ecg:3,echo:0,bp:1,grbs:1,leave:'VIDHYA AKSHITH LALITHAMMA',perm:'UMA 2 hrs',notes:'36897'},
+      {date:'07 Jan',col:50690,cum:212175,paytm:16195,card:5980,cash:28515,tp:65,lab:50,xray:7,scan:12,ecg:5,echo:5,bp:4,grbs:0,leave:'VIDYA AKSHITH LALITHAMMA',perm:'NILL',notes:'36937'},
+      {date:'08 Jan',col:26410,cum:238585,paytm:4760,card:340,cash:21310,tp:51,lab:36,xray:5,scan:8,ecg:3,echo:0,bp:5,grbs:1,leave:'VIDHYA & LALITHAMMA',perm:'NILL',notes:'NILL'},
+      {date:'09 Jan',col:45775,cum:284360,paytm:23920,card:7405,cash:14450,tp:45,lab:30,xray:6,scan:16,ecg:6,echo:0,bp:3,grbs:2,leave:'VIDHYA & LALITHAMMA',perm:'NILL',notes:'NILL'},
+      {date:'10 Jan',col:37075,cum:321135,paytm:13845,card:10135,cash:13095,tp:61,lab:42,xray:7,scan:13,ecg:6,echo:5,bp:2,grbs:0,leave:'VIDHYA, LALITHA, ARUN, JYOTHI & SUSHEELA',perm:'NILL',notes:'37096, 37107'},
+      {date:'11 Jan',col:17190,cum:338835,paytm:10600,card:1090,cash:5500,tp:28,lab:28,xray:0,scan:0,ecg:0,echo:0,bp:0,grbs:0,leave:'NILL',perm:'NILL',notes:'NILL'},
+      {date:'12 Jan',col:32490,cum:371325,paytm:9545,card:2820,cash:20125,tp:51,lab:40,xray:6,scan:10,ecg:2,echo:0,bp:4,grbs:0,leave:'VIDHYA, NIVEDITHA',perm:'NILL',notes:'BILL NO 36799, 37071'},
+      {date:'13 Jan',col:36035,cum:406850,paytm:19245,card:510,cash:16280,tp:45,lab:38,xray:3,scan:7,ecg:2,echo:0,bp:0,grbs:0,leave:'Akshith, Vidhya, Jyothi (half)',perm:'Nill',notes:'Nill'},
+      {date:'14 Jan',col:14685,cum:421535,paytm:8590,card:420,cash:5675,tp:27,lab:22,xray:3,scan:3,ecg:2,echo:0,bp:1,grbs:0,leave:'Akshith, Vidhya, Uma (half)',perm:'nill',notes:'NILL'},
+      {date:'15 Jan',col:null,cum:null,paytm:0,card:0,cash:0,tp:0,lab:0,xray:0,scan:0,ecg:0,echo:0,bp:0,grbs:0,leave:'HOLIDAY',perm:'',notes:'HOLIDAY',isHoliday:true},
+      {date:'16 Jan',col:30775,cum:452310,paytm:8900,card:740,cash:21135,tp:52,lab:32,xray:7,scan:17,ecg:4,echo:0,bp:2,grbs:0,leave:'JYOTHI',perm:'NILL',notes:'NILL'},
+      {date:'17 Jan',col:32550,cum:484860,paytm:17645,card:1200,cash:13705,tp:46,lab:32,xray:3,scan:12,ecg:5,echo:0,bp:4,grbs:0,leave:'CHAITHRA',perm:'NILL',notes:'NILL'},
+      {date:'18 Jan',col:16680,cum:501540,paytm:7700,card:4160,cash:4820,tp:39,lab:36,xray:1,scan:1,ecg:2,echo:0,bp:5,grbs:0,leave:'NILL',perm:'NILL',notes:'NILL'},
+      {date:'19 Jan',col:44560,cum:546100,paytm:25305,card:2815,cash:16440,tp:70,lab:46,xray:7,scan:15,ecg:7,echo:9,bp:5,grbs:0,leave:'JYOTHI SHETTY',perm:'NILL',notes:'NILL'},
+      {date:'20 Jan',col:42310,cum:588405,paytm:16025,card:1130,cash:25155,tp:50,lab:45,xray:4,scan:1,ecg:5,echo:0,bp:4,grbs:0,leave:'',perm:'NILL',notes:'NILL'},
+      {date:'21 Jan',col:31275,cum:619685,paytm:13725,card:660,cash:16890,tp:60,lab:52,xray:7,scan:0,ecg:6,echo:5,bp:3,grbs:0,leave:'NILL',perm:'NILL',notes:'NILL'},
+      {date:'22 Jan',col:29500,cum:649185,paytm:15335,card:2145,cash:12020,tp:59,lab:36,xray:4,scan:14,ecg:7,echo:1,bp:3,grbs:0,leave:'NILL',perm:'LALITHAMMA HALF DAY',notes:'NILL'},
+      {date:'23 Jan',col:27030,cum:676215,paytm:12040,card:4500,cash:10490,tp:50,lab:27,xray:0,scan:16,ecg:3,echo:0,bp:2,grbs:0,leave:'SUSHEELAMMA',perm:'NILL',notes:'NILL'},
+      {date:'24 Jan',col:30640,cum:706855,paytm:12320,card:0,cash:18320,tp:44,lab:41,xray:0,scan:0,ecg:0,echo:0,bp:4,grbs:0,leave:'UMA',perm:'NILL',notes:'NILL'},
+      {date:'25 Jan',col:15510,cum:722365,paytm:7310,card:2645,cash:5555,tp:22,lab:22,xray:0,scan:0,ecg:0,echo:0,bp:0,grbs:0,leave:'NILL',perm:'NILL',notes:'NILL'},
+      {date:'26 Jan',col:17515,cum:739880,paytm:9660,card:0,cash:7855,tp:31,lab:31,xray:0,scan:0,ecg:0,echo:0,bp:0,grbs:0,leave:'NILL',perm:'NILL',notes:'NILL'},
+      {date:'27 Jan',col:33220,cum:773100,paytm:9035,card:600,cash:23585,tp:60,lab:42,xray:7,scan:15,ecg:6,echo:0,bp:12,grbs:0,leave:'Rajalakshmi',perm:'Nill',notes:'NILL'},
+      {date:'28 Jan',col:37790,cum:810890,paytm:22565,card:2200,cash:13025,tp:52,lab:40,xray:5,scan:9,ecg:7,echo:0,bp:4,grbs:1,leave:'NILL',perm:'NILL',notes:'NILL'},
+      {date:'29 Jan',col:33945,cum:844835,paytm:13490,card:2790,cash:17665,tp:56,lab:33,xray:6,scan:14,ecg:8,echo:5,bp:8,grbs:1,leave:'NILL',perm:'LAB JYOTHI (2 HOURS)',notes:'37930'},
+      {date:'30 Jan',col:22485,cum:867320,paytm:12250,card:200,cash:10035,tp:43,lab:28,xray:6,scan:7,ecg:6,echo:0,bp:5,grbs:0,leave:'JYOTHI (LAB) NIVEDITHA',perm:'JYOTHI & LALITHA (2 HOURS)',notes:'NILL'},
+      {date:'31 Jan',col:24135,cum:891455,paytm:11980,card:2500,cash:9655,tp:43,lab:32,xray:2,scan:9,ecg:1,echo:0,bp:3,grbs:1,leave:'JYOTHI (LAB) NIVEDITHA',perm:'CHAITHRA 2hr',notes:'NILL'},
+    ]
+  },
+  {
+    id: 'feb26', name: 'February 2026', shortName: 'Feb',
+    total: 1074205, paytm: 576518, card: 39960, cash: 457727,
+    patients: 1628, lab: 1217, xray: 125, scan: 312, ecg: 134, echo: 48,
+    days: [
+      {date:'01 Feb',col:25755,cum:0,paytm:13470,card:2610,cash:9675,tp:40,lab:40,xray:1,scan:1,ecg:1,echo:0,bp:0,grbs:0,leave:'NILL',perm:'NILL',notes:'NILL'},
+      {date:'02 Feb',col:46605,cum:72360,paytm:14690,card:3500,cash:28415,tp:66,lab:42,xray:1,scan:12,ecg:4,echo:0,bp:5,grbs:0,leave:'NILL',perm:'NILL',notes:'NILL'},
+      {date:'03 Feb',col:42015,cum:114375,paytm:25720,card:0,cash:16295,tp:73,lab:60,xray:1,scan:11,ecg:5,echo:0,bp:6,grbs:1,leave:'NILL',perm:'NILL',notes:'NILL'},
+      {date:'04 Feb',col:43415,cum:157790,paytm:22080,card:6700,cash:14635,tp:82,lab:49,xray:6,scan:15,ecg:8,echo:5,bp:7,grbs:0,leave:'Nill',perm:'Nill',notes:'Nill'},
+      {date:'05 Feb',col:39940,cum:197730,paytm:24420,card:0,cash:15520,tp:56,lab:39,xray:3,scan:16,ecg:5,echo:3,bp:0,grbs:0,leave:'Nill',perm:'Nill',notes:'Nill'},
+      {date:'06 Feb',col:32485,cum:230215,paytm:10995,card:560,cash:20930,tp:53,lab:40,xray:3,scan:13,ecg:6,echo:0,bp:1,grbs:0,leave:'NIVEDITHA',perm:'Nill',notes:'38378'},
+      {date:'07 Feb',col:39615,cum:269830,paytm:16850,card:7725,cash:15040,tp:65,lab:40,xray:9,scan:16,ecg:11,echo:7,bp:2,grbs:1,leave:'Chaithra & Shantha Kumar (Half)',perm:'Nill',notes:'38434'},
+      {date:'08 Feb',col:35280,cum:305110,paytm:23800,card:0,cash:11480,tp:38,lab:38,xray:1,scan:0,ecg:1,echo:0,bp:2,grbs:0,leave:'Nill',perm:'Nill',notes:'38522'},
+      {date:'09 Feb',col:37625,cum:342735,paytm:14533,card:200,cash:22892,tp:64,lab:35,xray:12,scan:14,ecg:2,echo:6,bp:6,grbs:1,leave:'VIDYA',perm:'Nill',notes:'38565'},
+      {date:'10 Feb',col:23560,cum:366295,paytm:11640,card:0,cash:11920,tp:43,lab:31,xray:2,scan:12,ecg:4,echo:0,bp:5,grbs:0,leave:'RAJALAKSMI & SHEELA (HALF DAY)',perm:'Nill',notes:'Nill'},
+      {date:'11 Feb',col:48535,cum:414830,paytm:20460,card:0,cash:28075,tp:84,lab:60,xray:5,scan:13,ecg:8,echo:5,bp:8,grbs:1,leave:'AKSHITH (HALF) ARUN (HALF)',perm:'UMA 1.5hr',notes:'38696, 38673'},
+      {date:'12 Feb',col:41385,cum:456215,paytm:19330,card:0,cash:22055,tp:59,lab:45,xray:6,scan:16,ecg:6,echo:0,bp:2,grbs:0,leave:'AKSHITH & SHANTHKUMAR',perm:'Nill',notes:'Nill'},
+      {date:'13 Feb',col:36445,cum:492660,paytm:15060,card:705,cash:20680,tp:53,lab:39,xray:6,scan:12,ecg:6,echo:0,bp:5,grbs:0,leave:'Nill',perm:'Nill',notes:'Nill'},
+      {date:'14 Feb',col:50630,cum:543290,paytm:25135,card:7960,cash:17535,tp:66,lab:53,xray:6,scan:9,ecg:10,echo:9,bp:7,grbs:2,leave:'Nill',perm:'Nill',notes:'Nill'},
+      {date:'15 Feb',col:16790,cum:560080,paytm:12055,card:0,cash:4735,tp:24,lab:24,xray:2,scan:1,ecg:1,echo:0,bp:1,grbs:0,leave:'Nill',perm:'Nill',notes:'38904'},
+      {date:'16 Feb',col:31450,cum:591530,paytm:22035,card:0,cash:9415,tp:51,lab:27,xray:10,scan:17,ecg:7,echo:0,bp:6,grbs:1,leave:'Nill',perm:'Nill',notes:'Nill'},
+      {date:'17 Feb',col:30065,cum:621595,paytm:21065,card:0,cash:6300,tp:43,lab:34,xray:1,scan:8,ecg:1,echo:0,bp:0,grbs:0,leave:'Nill',perm:'Nill',notes:'Nill'},
+      {date:'18 Feb',col:34895,cum:656740,paytm:19360,card:0,cash:15535,tp:64,lab:45,xray:7,scan:11,ecg:7,echo:5,bp:3,grbs:2,leave:'NILL',perm:'Nill',notes:'Nill'},
+      {date:'19 Feb',col:59540,cum:716280,paytm:27535,card:0,cash:32005,tp:75,lab:59,xray:1,scan:11,ecg:3,echo:0,bp:5,grbs:2,leave:'SHANTH KUMAR',perm:'Nill',notes:'BILL NO:39090'},
+      {date:'20 Feb',col:28370,cum:744650,paytm:16970,card:0,cash:11400,tp:52,lab:40,xray:3,scan:10,ecg:1,echo:0,bp:0,grbs:1,leave:'SHANTH KUMAR & CHAITHRA',perm:'Nill',notes:'Nill'},
+      {date:'21 Feb',col:57640,cum:802040,paytm:30830,card:0,cash:26810,tp:77,lab:60,xray:9,scan:17,ecg:8,echo:4,bp:6,grbs:0,leave:'CHAITHRA',perm:'Nill',notes:'Nill'},
+      {date:'22 Feb',col:33005,cum:835045,paytm:25665,card:0,cash:7340,tp:45,lab:43,xray:3,scan:2,ecg:4,echo:0,bp:5,grbs:0,leave:'Nill',perm:'Nill',notes:'NILL'},
+      {date:'23 Feb',col:41295,cum:876340,paytm:20950,card:0,cash:20345,tp:57,lab:44,xray:4,scan:11,ecg:4,echo:0,bp:3,grbs:1,leave:'LAKSHMAMMA',perm:'Nill',notes:'Nill'},
+      {date:'24 Feb',col:28375,cum:904715,paytm:15405,card:0,cash:12970,tp:52,lab:42,xray:2,scan:13,ecg:3,echo:0,bp:4,grbs:0,leave:'LAKSHMAMMA',perm:'JYOTHI SHETTY 2 HOUR',notes:'Nill'},
+      {date:'25 Feb',col:41460,cum:946175,paytm:26460,card:0,cash:15000,tp:63,lab:50,xray:7,scan:8,ecg:5,echo:0,bp:11,grbs:1,leave:'JYOTHI SHETTY',perm:'Nill',notes:'Nill'},
+      {date:'26 Feb',col:41495,cum:987670,paytm:22515,card:0,cash:18980,tp:64,lab:44,xray:4,scan:17,ecg:5,echo:4,bp:4,grbs:0,leave:'JYOTHI SETTY & JYOTHI L (HALF DAY)',perm:'Nill',notes:'Nill'},
+      {date:'27 Feb',col:46965,cum:1034635,paytm:26795,card:0,cash:20170,tp:55,lab:41,xray:2,scan:12,ecg:6,echo:0,bp:3,grbs:0,leave:'nill',perm:'nill',notes:'nill'},
+      {date:'28 Feb',col:39570,cum:1074205,paytm:17805,card:0,cash:21765,tp:64,lab:53,xray:8,scan:14,ecg:2,echo:0,bp:5,grbs:0,leave:'SHEELA',perm:'Nill',notes:'Nill'},
+    ]
+  },
+  {
+    id: 'mar26', name: 'March 2026', shortName: 'Mar',
+    total: 1051940, paytm: 582420, card: 0, cash: 469520,
+    patients: 1512, lab: 1196, xray: 122, scan: 66, ecg: 139, echo: 35,
+    days: [
+      {date:'01 Mar',col:21975,cum:null,paytm:16895,card:0,cash:5080,tp:34,lab:34,xray:0,scan:0,ecg:1,echo:0,bp:2,grbs:0,leave:'NILL',perm:'NILL',notes:'NILL'},
+      {date:'02 Mar',col:28085,cum:50060,paytm:11080,card:0,cash:17005,tp:51,lab:30,xray:6,scan:15,ecg:4,echo:4,bp:6,grbs:0,leave:'NILL',perm:'NILL',notes:'NILL'},
+      {date:'03 Mar',col:37975,cum:88035,paytm:19385,card:0,cash:18590,tp:43,lab:36,xray:3,scan:10,ecg:6,echo:0,bp:2,grbs:0,leave:'NILL',perm:'NILL',notes:'NILL'},
+      {date:'04 Mar',col:46990,cum:135025,paytm:34180,card:0,cash:12810,tp:66,lab:46,xray:5,scan:12,ecg:5,echo:5,bp:2,grbs:1,leave:'NILL',perm:'NILL',notes:'39863'},
+      {date:'05 Mar',col:41100,cum:176125,paytm:21950,card:0,cash:19150,tp:64,lab:47,xray:2,scan:15,ecg:4,echo:0,bp:6,grbs:0,leave:'LAB JYOTHI',perm:'NILL',notes:'NILL'},
+      {date:'06 Mar',col:29135,cum:205260,paytm:14455,card:0,cash:14680,tp:45,lab:34,xray:0,scan:12,ecg:5,echo:0,bp:3,grbs:1,leave:'JYOTHI L',perm:'NILL',notes:'NILL'},
+      {date:'07 Mar',col:34630,cum:239890,paytm:19970,card:0,cash:14660,tp:56,lab:45,xray:4,scan:5,ecg:6,echo:0,bp:0,grbs:0,leave:'ARUN',perm:'HARI KRISHNA 2 hrs',notes:'NILL'},
+      {date:'08 Mar',col:20085,cum:259975,paytm:10220,card:0,cash:9865,tp:31,lab:31,xray:1,scan:0,ecg:2,echo:0,bp:1,grbs:0,leave:'NILL',perm:'NILL',notes:'NILL'},
+      {date:'09 Mar',col:37815,cum:297790,paytm:15900,card:0,cash:21915,tp:58,lab:45,xray:7,scan:9,ecg:5,echo:0,bp:6,grbs:0,leave:'LAKSHMAMMA & HARI KRISHNA',perm:'NILL',notes:'NILL'},
+      {date:'10 Mar',col:37905,cum:335695,paytm:20400,card:0,cash:17505,tp:49,lab:33,xray:7,scan:15,ecg:7,echo:0,bp:5,grbs:0,leave:'LAKSHMAMMA & HARI KRISHNA',perm:'NILL',notes:'40178'},
+      {date:'11 Mar',col:55295,cum:390990,paytm:32810,card:0,cash:22485,tp:85,lab:63,xray:6,scan:14,ecg:8,echo:4,bp:13,grbs:1,leave:'HARIKRISHNA',perm:'NILL',notes:'40212, 40194'},
+      {date:'12 Mar',col:45300,cum:436290,paytm:28860,card:0,cash:16440,tp:55,lab:44,xray:5,scan:13,ecg:3,echo:0,bp:0,grbs:0,leave:'Arun & Harikrishna',perm:'Lalithamma 2 hrs',notes:'40309'},
+      {date:'13 Mar',col:38970,cum:475260,paytm:21390,card:0,cash:17580,tp:56,lab:39,xray:5,scan:18,ecg:4,echo:0,bp:3,grbs:1,leave:'SUSHEELAMMA',perm:'NILL',notes:'40374'},
+      {date:'14 Mar',col:56760,cum:532020,paytm:39600,card:0,cash:17160,tp:59,lab:39,xray:7,scan:18,ecg:8,echo:4,bp:1,grbs:0,leave:'NILL',perm:'NILL',notes:'40382'},
+      {date:'15 Mar',col:30000,cum:562020,paytm:17985,card:0,cash:12015,tp:42,lab:42,xray:0,scan:0,ecg:0,echo:0,bp:0,grbs:0,leave:'NILL',perm:'NILL',notes:'Nill'},
+      {date:'16 Mar',col:29250,cum:591270,paytm:18660,card:0,cash:10590,tp:51,lab:39,xray:6,scan:17,ecg:6,echo:0,bp:5,grbs:0,leave:'RAJALAKSHMI',perm:'NILL',notes:'Nill'},
+      {date:'17 Mar',col:34680,cum:597865,paytm:19205,card:0,cash:15475,tp:53,lab:46,xray:4,scan:10,ecg:6,echo:0,bp:8,grbs:0,leave:'CHAITHRA',perm:'NILL',notes:'Nill'},
+      {date:'18 Mar',col:36580,cum:662530,paytm:17095,card:0,cash:19485,tp:49,lab:33,xray:5,scan:14,ecg:6,echo:3,bp:3,grbs:0,leave:'NILL',perm:'UMA 2 HRS',notes:'Nill'},
+      {date:'19 Mar',col:null,cum:null,paytm:0,card:0,cash:0,tp:0,lab:0,xray:0,scan:0,ecg:0,echo:0,bp:0,grbs:0,leave:'HOLIDAY',perm:'',notes:'HOLIDAY',isHoliday:true},
+      {date:'20 Mar',col:31855,cum:694385,paytm:18870,card:0,cash:12985,tp:56,lab:47,xray:7,scan:5,ecg:7,echo:0,bp:4,grbs:0,leave:'NILL',perm:'NILL',notes:'Nill'},
+      {date:'21 Mar',col:20350,cum:714735,paytm:7035,card:0,cash:13315,tp:34,lab:32,xray:2,scan:0,ecg:3,echo:0,bp:2,grbs:0,leave:'NILL',perm:'NILL',notes:'Nill'},
+      {date:'22 Mar',col:14675,cum:729410,paytm:7415,card:0,cash:7260,tp:28,lab:28,xray:0,scan:0,ecg:0,echo:0,bp:0,grbs:0,leave:'NILL',perm:'NILL',notes:'Nill'},
+      {date:'23 Mar',col:40840,cum:770250,paytm:17080,card:0,cash:23760,tp:53,lab:46,xray:5,scan:16,ecg:5,echo:0,bp:0,grbs:0,leave:'NILL',perm:'LAB JYOTHI (2 HOURS)',notes:'Nill'},
+      {date:'24 Mar',col:59615,cum:829880,paytm:30200,card:0,cash:29415,tp:73,lab:53,xray:7,scan:18,ecg:5,echo:0,bp:8,grbs:0,leave:'SHUSHEELA',perm:'LALITHAMMA HALF DAY & JYOTHI 2hr',notes:'40853'},
+      {date:'25 Mar',col:39155,cum:869020,paytm:16575,card:0,cash:22580,tp:59,lab:47,xray:6,scan:8,ecg:7,echo:5,bp:3,grbs:1,leave:'SUSHEELAMMA & JYOTHI L',perm:'NILL',notes:'Nill'},
+      {date:'26 Mar',col:32025,cum:901045,paytm:17495,card:0,cash:14530,tp:46,lab:38,xray:7,scan:9,ecg:5,echo:0,bp:3,grbs:1,leave:'JYOTHI L',perm:'NILL',notes:'Nill'},
+      {date:'27 Mar',col:28030,cum:929075,paytm:17860,card:0,cash:10170,tp:35,lab:29,xray:2,scan:7,ecg:2,echo:0,bp:1,grbs:0,leave:'NILL',perm:'NILL',notes:'41018'},
+      {date:'28 Mar',col:32475,cum:961550,paytm:22925,card:0,cash:9550,tp:49,lab:40,xray:2,scan:7,ecg:5,echo:0,bp:4,grbs:0,leave:'NILL',perm:'SUSHEELA (2HRS)',notes:'Nill'},
+      {date:'29 Mar',col:17635,cum:979185,paytm:4450,card:0,cash:13185,tp:30,lab:30,xray:0,scan:0,ecg:0,echo:0,bp:0,grbs:0,leave:'NILL',perm:'NILL',notes:'Nill'},
+      {date:'30 Mar',col:37885,cum:1017070,paytm:23420,card:0,cash:14465,tp:66,lab:45,xray:5,scan:9,ecg:9,echo:10,bp:2,grbs:1,leave:'JYOTHI (LAB) & SHANTH KUMAR (HALF)',perm:'NILL',notes:'DR MANU KUMAR SIR ON LEAVE'},
+      {date:'31 Mar',col:34870,cum:1051940,paytm:19055,card:0,cash:15815,tp:36,lab:35,xray:6,scan:5,ecg:5,echo:0,bp:1,grbs:0,leave:'NILL',perm:'CHAITHRA 2hrs',notes:'DR MANU KUMAR SIR ON LEAVE'},
+    ]
+  },
+
 ];
 
 const fmt = n => n != null ? '₹' + n.toLocaleString('en-IN') : '–';
@@ -665,36 +777,51 @@ months.forEach(m => {
   tabNav.appendChild(btn);
 });
 
+// STAFF LEAVE tab
+const leaveBtn = document.createElement('button');
+leaveBtn.className = 'tab-btn';
+leaveBtn.textContent = '👥 Staff Leave';
+leaveBtn.dataset.tab = 'staffleave';
+tabNav.appendChild(leaveBtn);
+
+// CANCEL BILLS tab
+const cancelBtn = document.createElement('button');
+cancelBtn.className = 'tab-btn';
+cancelBtn.textContent = '🧾 Cancel Bills';
+cancelBtn.dataset.tab = 'cancelbills';
+tabNav.appendChild(cancelBtn);
+
+
 // ─────────────────────────────────────────────────────────
 // OVERVIEW PANEL
 // ─────────────────────────────────────────────────────────
-const totalRevenue = months.reduce((s, m) => s + m.total, 0);
+const totalCollection = months.reduce((s, m) => s + m.total, 0);
 const totalPatients = months.reduce((s, m) => s + m.patients, 0);
 const totalLab = months.reduce((s, m) => s + m.lab, 0);
 const totalXray = months.reduce((s, m) => s + m.xray, 0);
 const totalScan = months.reduce((s, m) => s + m.scan, 0);
 const bestMonth = months.reduce((b, m) => m.total > b.total ? m : b);
-const avgMonthly = Math.round(totalRevenue / months.length);
+const avgMonthly = Math.round(totalCollection / months.length);
 
 const overviewPanel = document.createElement('div');
 overviewPanel.className = 'tab-panel active';
 overviewPanel.id = 'panel-overview';
 overviewPanel.innerHTML = `
   <div class="overview-grid">
-    <div class="kpi blue"><div class="kpi-label">Total Revenue (9 Months)</div><div class="kpi-value">₹${(totalRevenue/1e5).toFixed(2)}L</div><div class="kpi-sub">Apr – Dec 2025</div></div>
+    <div class="kpi blue"><div class="kpi-label">Total Collection (12 Months)</div><div class="kpi-value">₹${(totalCollection/1e5).toFixed(2)}L</div><div class="kpi-sub">Apr 2025 – Mar 2026</div></div>
     <div class="kpi purple"><div class="kpi-label">Total Patients</div><div class="kpi-value">${fmtN(totalPatients)}</div><div class="kpi-sub">All months combined</div></div>
-    <div class="kpi green"><div class="kpi-label">Avg Monthly Revenue</div><div class="kpi-value small">₹${(avgMonthly/1e5).toFixed(2)}L</div><div class="kpi-sub">Per month average</div></div>
-    <div class="kpi amber"><div class="kpi-label">Best Month</div><div class="kpi-value small">${bestMonth.shortName} 2025</div><div class="kpi-sub">₹${(bestMonth.total/1e5).toFixed(2)}L revenue</div></div>
+    <div class="kpi green"><div class="kpi-label">Avg Monthly Collection</div><div class="kpi-value small">₹${(avgMonthly/1e5).toFixed(2)}L</div><div class="kpi-sub">Per month average</div></div>
+    <div class="kpi amber"><div class="kpi-label">Best Month</div><div class="kpi-value small">${bestMonth.shortName} 2025</div><div class="kpi-sub">₹${(bestMonth.total/1e5).toFixed(2)}L collection</div></div>
     <div class="kpi blue"><div class="kpi-label">Lab Patients</div><div class="kpi-value">${fmtN(totalLab)}</div><div class="kpi-sub">Total tests done</div></div>
     <div class="kpi purple"><div class="kpi-label">X-Ray Patients</div><div class="kpi-value">${fmtN(totalXray)}</div><div class="kpi-sub">Total X-rays</div></div>
     <div class="kpi green"><div class="kpi-label">Scan Patients</div><div class="kpi-value">${fmtN(totalScan)}</div><div class="kpi-sub">Total scans</div></div>
     <div class="kpi amber"><div class="kpi-label">Total ECG</div><div class="kpi-value">${fmtN(months.reduce((s,m)=>s+m.ecg,0))}</div><div class="kpi-sub">Total ECGs done</div></div>
   </div>
 
-  <div class="section-header"><div class="section-dot"></div><div class="section-title">Monthly Revenue Trend</div><div class="section-sub">₹ Collection per month</div></div>
+  <div class="section-header"><div class="section-dot"></div><div class="section-title">Monthly Collection Trend</div><div class="section-sub">₹ Collection per month</div></div>
   <div class="charts-row">
     <div class="chart-card chart-wide">
-      <h3>Monthly Revenue (₹)</h3>
+      <h3>Monthly Collection (₹)</h3>
       <div class="chart-wrap tall"><canvas id="revTrendChart"></canvas></div>
     </div>
   </div>
@@ -733,7 +860,7 @@ months.forEach(m => {
   card.className = 'month-card';
   card.innerHTML = `
     <div class="month-card-name">${m.name}</div>
-    <div class="month-card-revenue">${fmt(m.total)}</div>
+    <div class="month-card-collection">${fmt(m.total)}</div>
     <div class="month-card-patients">${fmtN(m.patients)} patients</div>
     <div class="month-card-bar" style="width:${barWidth}%"></div>
   `;
@@ -788,7 +915,7 @@ months.forEach(m => {
 
   panel.innerHTML = `
     <div class="overview-grid" style="margin-top:4px;">
-      <div class="kpi blue"><div class="kpi-label">Month Revenue</div><div class="kpi-value small">${fmt(m.total)}</div><div class="kpi-sub">Total collection</div></div>
+      <div class="kpi blue"><div class="kpi-label">Month Collection</div><div class="kpi-value small">${fmt(m.total)}</div><div class="kpi-sub">Total collection</div></div>
       <div class="kpi purple"><div class="kpi-label">Total Patients</div><div class="kpi-value">${fmtN(m.patients)}</div><div class="kpi-sub">All visits</div></div>
       <div class="kpi green"><div class="kpi-label">Avg Daily</div><div class="kpi-value small">${fmt(avgDaily)}</div><div class="kpi-sub">Per working day</div></div>
       <div class="kpi amber"><div class="kpi-label">Best Day</div><div class="kpi-value small">${fmt(maxDaily)}</div><div class="kpi-sub">${maxDay ? maxDay.date : ''}</div></div>
@@ -889,13 +1016,13 @@ function baseOptions(yLabel = '') {
   };
 }
 
-// Overview: Revenue trend
+// Overview: Collection trend
 new Chart(document.getElementById('revTrendChart'), {
   type: 'bar',
   data: {
     labels: months.map(m => m.shortName),
     datasets: [{
-      label: 'Revenue',
+      label: 'Collection',
       data: months.map(m => m.total),
       backgroundColor: months.map(m => m.id === bestMonth.id ? COLORS.gold : 'rgba(0,212,255,0.55)'),
       borderColor: months.map(m => m.id === bestMonth.id ? COLORS.gold : COLORS.accent),
@@ -1049,6 +1176,321 @@ months.forEach(m => {
     }
   });
 });
+
+
+// ─────────────────────────────────────────────────────────
+// STAFF LEAVE PANEL
+// ─────────────────────────────────────────────────────────
+const staffLeavePanel = document.createElement('div');
+staffLeavePanel.className = 'tab-panel';
+staffLeavePanel.id = 'panel-staffleave';
+staffLeavePanel.innerHTML = `
+  <div class="overview-grid" style="margin-top:4px;">
+    <div class="kpi blue"><div class="kpi-label">Total Staff</div><div class="kpi-value">14</div><div class="kpi-sub">Apr 2025 – Mar 2026</div></div>
+    <div class="kpi purple"><div class="kpi-label">Total Leaves Taken</div><div class="kpi-value">254.0</div><div class="kpi-sub">All staff combined</div></div>
+    <div class="kpi amber"><div class="kpi-label">Highest Leave</div><div class="kpi-value small">Shanth Kumar</div><div class="kpi-sub">43.5 days (3.5/month)</div></div>
+    <div class="kpi green"><div class="kpi-label">Lowest Leave</div><div class="kpi-value small">HARIKRISHNA</div><div class="kpi-sub">4.5 days (3/month)</div></div>
+  </div>
+
+  <div class="section-header"><div class="section-dot" style="background:var(--accent2);box-shadow:0 0 8px var(--accent2)"></div><div class="section-title">Staff Leave Summary — Apr 2025 to Mar 2026</div></div>
+  <div class="charts-row">
+    <div class="chart-card chart-wide">
+      <h3>Staff Leave Distribution</h3>
+      <div class="chart-wrap tall"><canvas id="staffLeaveChart"></canvas></div>
+    </div>
+  </div>
+
+  <div class="section-header"><div class="section-dot"></div><div class="section-title">Detailed Staff Leave Record</div><div class="section-sub">14 staff members</div></div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Staff Name</th>
+          <th>Total Leave</th>
+          <th>Avg / Month</th>
+          <th>Distribution</th>
+        </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td class="date-col">1</td>
+        <td style="color:#fff;font-weight:500">Akshith</td>
+        <td class="patients">25</td>
+        <td class="money">2</td>
+        <td><div style="background:linear-gradient(90deg,rgba(124,58,237,0.7),rgba(0,212,255,0.5));height:8px;border-radius:4px;width:57%"></div></td>
+      </tr>
+      <tr>
+        <td class="date-col">2</td>
+        <td style="color:#fff;font-weight:500">Vidya tv</td>
+        <td class="patients">35</td>
+        <td class="money">3</td>
+        <td><div style="background:linear-gradient(90deg,rgba(124,58,237,0.7),rgba(0,212,255,0.5));height:8px;border-radius:4px;width:80%"></div></td>
+      </tr>
+      <tr>
+        <td class="date-col">3</td>
+        <td style="color:#fff;font-weight:500">Jyothi shettty</td>
+        <td class="patients">17</td>
+        <td class="money">2</td>
+        <td><div style="background:linear-gradient(90deg,rgba(124,58,237,0.7),rgba(0,212,255,0.5));height:8px;border-radius:4px;width:39%"></div></td>
+      </tr>
+      <tr>
+        <td class="date-col">4</td>
+        <td style="color:#fff;font-weight:500">Uma</td>
+        <td class="patients">11</td>
+        <td class="money">1</td>
+        <td><div style="background:linear-gradient(90deg,rgba(124,58,237,0.7),rgba(0,212,255,0.5));height:8px;border-radius:4px;width:25%"></div></td>
+      </tr>
+      <tr>
+        <td class="date-col">5</td>
+        <td style="color:#fff;font-weight:500">Sheela ek</td>
+        <td class="patients">16.5</td>
+        <td class="money">1.5</td>
+        <td><div style="background:linear-gradient(90deg,rgba(124,58,237,0.7),rgba(0,212,255,0.5));height:8px;border-radius:4px;width:37%"></div></td>
+      </tr>
+      <tr>
+        <td class="date-col">6</td>
+        <td style="color:#fff;font-weight:500">Lalitha</td>
+        <td class="patients">21</td>
+        <td class="money">1.5</td>
+        <td><div style="background:linear-gradient(90deg,rgba(124,58,237,0.7),rgba(0,212,255,0.5));height:8px;border-radius:4px;width:48%"></div></td>
+      </tr>
+      <tr>
+        <td class="date-col">7</td>
+        <td style="color:#fff;font-weight:500">Rajalakshmi</td>
+        <td class="patients">13.5</td>
+        <td class="money">1</td>
+        <td><div style="background:linear-gradient(90deg,rgba(124,58,237,0.7),rgba(0,212,255,0.5));height:8px;border-radius:4px;width:31%"></div></td>
+      </tr>
+      <tr>
+        <td class="date-col">8</td>
+        <td style="color:#fff;font-weight:500">Jyothi L</td>
+        <td class="patients">22.5</td>
+        <td class="money">1.5</td>
+        <td><div style="background:linear-gradient(90deg,rgba(124,58,237,0.7),rgba(0,212,255,0.5));height:8px;border-radius:4px;width:51%"></div></td>
+      </tr>
+      <tr>
+        <td class="date-col">9</td>
+        <td style="color:#fff;font-weight:500">Arun</td>
+        <td class="patients">18</td>
+        <td class="money">1.5</td>
+        <td><div style="background:linear-gradient(90deg,rgba(124,58,237,0.7),rgba(0,212,255,0.5));height:8px;border-radius:4px;width:41%"></div></td>
+      </tr>
+      <tr>
+        <td class="date-col">10</td>
+        <td style="color:#fff;font-weight:500">Shanth Kumar</td>
+        <td class="patients">43.5</td>
+        <td class="money">3.5</td>
+        <td><div style="background:linear-gradient(90deg,rgba(124,58,237,0.7),rgba(0,212,255,0.5));height:8px;border-radius:4px;width:100%"></div></td>
+      </tr>
+      <tr>
+        <td class="date-col">11</td>
+        <td style="color:#fff;font-weight:500">Lakshmi</td>
+        <td class="patients">7</td>
+        <td class="money">0.5</td>
+        <td><div style="background:linear-gradient(90deg,rgba(124,58,237,0.7),rgba(0,212,255,0.5));height:8px;border-radius:4px;width:16%"></div></td>
+      </tr>
+      <tr>
+        <td class="date-col">12</td>
+        <td style="color:#fff;font-weight:500">Susheela</td>
+        <td class="patients">13.5</td>
+        <td class="money">1</td>
+        <td><div style="background:linear-gradient(90deg,rgba(124,58,237,0.7),rgba(0,212,255,0.5));height:8px;border-radius:4px;width:31%"></div></td>
+      </tr>
+      <tr>
+        <td class="date-col">13</td>
+        <td style="color:#fff;font-weight:500">CHAITRA S</td>
+        <td class="patients">6</td>
+        <td class="money">1.5</td>
+        <td><div style="background:linear-gradient(90deg,rgba(124,58,237,0.7),rgba(0,212,255,0.5));height:8px;border-radius:4px;width:13%"></div></td>
+      </tr>
+      <tr>
+        <td class="date-col">14</td>
+        <td style="color:#fff;font-weight:500">HARIKRISHNA</td>
+        <td class="patients">4.5</td>
+        <td class="money">3</td>
+        <td><div style="background:linear-gradient(90deg,rgba(124,58,237,0.7),rgba(0,212,255,0.5));height:8px;border-radius:4px;width:10%"></div></td>
+      </tr></tbody>
+      <tfoot>
+        <tr class="total-row">
+          <td></td>
+          <td>TOTAL</td>
+          <td>254.0</td>
+          <td></td>
+          <td></td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+`;
+mainContent.appendChild(staffLeavePanel);
+
+// Staff Leave Chart
+setTimeout(() => {
+  const slCanvas = document.getElementById('staffLeaveChart');
+  if (slCanvas) {
+    new Chart(slCanvas, {
+      type: 'bar',
+      data: {
+        labels: ['Akshith', 'Vidya tv', 'Jyothi shettty', 'Uma', 'Sheela ek', 'Lalitha', 'Rajalakshmi', 'Jyothi L', 'Arun', 'Shanth Kumar', 'Lakshmi', 'Susheela', 'CHAITRA S', 'HARIKRISHNA'],
+        datasets: [{
+          label: 'Total Leave Days',
+          data: [25, 35, 17, 11, 16.5, 21, 13.5, 22.5, 18, 43.5, 7, 13.5, 6, 4.5],
+          backgroundColor: [25, 35, 17, 11, 16.5, 21, 13.5, 22.5, 18, 43.5, 7, 13.5, 6, 4.5].map(v => v > 30 ? 'rgba(239,68,68,0.7)' : v > 20 ? 'rgba(245,158,11,0.7)' : 'rgba(0,212,255,0.55)'),
+          borderRadius: 6,
+        }]
+      },
+      options: {
+        ...baseOptions('Leave Days'),
+        indexAxis: 'y',
+        plugins: {
+          legend: { display: false }
+        }
+      }
+    });
+  }
+}, 100);
+
+// ─────────────────────────────────────────────────────────
+// CANCEL BILLS PANEL
+// ─────────────────────────────────────────────────────────
+const cancelBillsPanel = document.createElement('div');
+cancelBillsPanel.className = 'tab-panel';
+cancelBillsPanel.id = 'panel-cancelbills';
+cancelBillsPanel.innerHTML = `
+  <div class="overview-grid" style="margin-top:4px;">
+    <div class="kpi blue"><div class="kpi-label">Total Bill Alterations</div><div class="kpi-value">51</div><div class="kpi-sub">Apr 2025 – Mar 2026</div></div>
+    <div class="kpi red"><div class="kpi-label">Total Cancelled Bills</div><div class="kpi-value">10</div><div class="kpi-sub">Apr 2025 – Mar 2026</div></div>
+    <div class="kpi green"><div class="kpi-label">Avg Alterations/Month</div><div class="kpi-value small">4.2</div><div class="kpi-sub">Per month average</div></div>
+    <div class="kpi amber"><div class="kpi-label">Avg Cancellations/Month</div><div class="kpi-value small">0.8</div><div class="kpi-sub">Per month average</div></div>
+  </div>
+
+  <div class="section-header"><div class="section-dot" style="background:var(--accent5);box-shadow:0 0 8px var(--accent5)"></div><div class="section-title">Monthly Bill Alterations & Cancellations</div></div>
+  <div class="charts-row">
+    <div class="chart-card chart-wide">
+      <h3>Alter vs Cancel Bills by Month</h3>
+      <div class="chart-wrap tall"><canvas id="cancelBillsChart"></canvas></div>
+    </div>
+  </div>
+
+  <div class="section-header"><div class="section-dot"></div><div class="section-title">Cancel Bills Detail</div><div class="section-sub">12 months</div></div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Month</th>
+          <th>Total Bill Alter</th>
+          <th>Total Cancel Bill</th>
+        </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td class="date-col">Apr 2025</td>
+        <td class="patients">4</td>
+        <td style="color:var(--accent5);font-weight:600">1</td>
+      </tr>
+      <tr>
+        <td class="date-col">May 2025</td>
+        <td class="patients">2</td>
+        <td style="color:var(--accent5);font-weight:600">2</td>
+      </tr>
+      <tr>
+        <td class="date-col">Jun 2025</td>
+        <td class="patients">5</td>
+        <td style="color:var(--accent5);font-weight:600">1</td>
+      </tr>
+      <tr>
+        <td class="date-col">Jul 2025</td>
+        <td class="patients">2</td>
+        <td style="color:var(--accent5);font-weight:600">0</td>
+      </tr>
+      <tr>
+        <td class="date-col">Aug 2025</td>
+        <td class="patients">5</td>
+        <td style="color:var(--accent5);font-weight:600">0</td>
+      </tr>
+      <tr>
+        <td class="date-col">Sep 2025</td>
+        <td class="patients">2</td>
+        <td style="color:var(--accent5);font-weight:600">0</td>
+      </tr>
+      <tr>
+        <td class="date-col">Oct 2025</td>
+        <td class="patients">3</td>
+        <td style="color:var(--accent5);font-weight:600">2</td>
+      </tr>
+      <tr>
+        <td class="date-col">Nov 2025</td>
+        <td class="patients">2</td>
+        <td style="color:var(--accent5);font-weight:600">2</td>
+      </tr>
+      <tr>
+        <td class="date-col">Dec 2025</td>
+        <td class="patients">6</td>
+        <td style="color:var(--accent5);font-weight:600">1</td>
+      </tr>
+      <tr>
+        <td class="date-col">Jan 2026</td>
+        <td class="patients">6</td>
+        <td style="color:var(--accent5);font-weight:600">0</td>
+      </tr>
+      <tr>
+        <td class="date-col">Feb 2026</td>
+        <td class="patients">6</td>
+        <td style="color:var(--accent5);font-weight:600">1</td>
+      </tr>
+      <tr>
+        <td class="date-col">Mar 2026</td>
+        <td class="patients">8</td>
+        <td style="color:var(--accent5);font-weight:600">0</td>
+      </tr></tbody>
+      <tfoot>
+        <tr class="total-row">
+          <td>TOTAL</td>
+          <td>51</td>
+          <td>10</td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+`;
+mainContent.appendChild(cancelBillsPanel);
+
+// Cancel Bills Chart
+setTimeout(() => {
+  const cbCanvas = document.getElementById('cancelBillsChart');
+  if (cbCanvas) {
+    new Chart(cbCanvas, {
+      type: 'bar',
+      data: {
+        labels: ['Apr 2025', 'May 2025', 'Jun 2025', 'Jul 2025', 'Aug 2025', 'Sep 2025', 'Oct 2025', 'Nov 2025', 'Dec 2025', 'Jan 2026', 'Feb 2026', 'Mar 2026'],
+        datasets: [
+          {
+            label: 'Bill Alterations',
+            data: [4, 2, 5, 2, 5, 2, 3, 2, 6, 6, 6, 8],
+            backgroundColor: 'rgba(245,158,11,0.7)',
+            borderRadius: 4,
+          },
+          {
+            label: 'Cancelled Bills',
+            data: [1, 2, 1, 0, 0, 0, 2, 2, 1, 0, 1, 0],
+            backgroundColor: 'rgba(239,68,68,0.7)',
+            borderRadius: 4,
+          }
+        ]
+      },
+      options: {
+        ...baseOptions('Count'),
+        plugins: {
+          legend: {
+            display: true, position: 'top',
+            labels: { color: textColor, font: { size: 10 }, boxWidth: 10 }
+          }
+        }
+      }
+    });
+  }
+}, 100);
 
 // ─────────────────────────────────────────────────────────
 // TAB SWITCHING
